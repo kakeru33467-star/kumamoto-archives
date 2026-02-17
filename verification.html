@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vérification Altérique</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        .game-container {
+            margin-top: 50px;
+        }
+
+        .orb {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #38bdf8, #0ea5e9);
+            position: absolute;
+            cursor: pointer;
+            box-shadow: 0 0 20px #38bdf8;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Vérification secondaire requise</h1>
+<p id="instruction">Stabilisez le flux altérique.</p>
+
+<div class="game-container" id="gameArea"></div>
+
+<div id="memoryTest" class="hidden">
+    <h2>Mémorisation requise</h2>
+    <p id="codeDisplay"></p>
+    <input type="text" id="codeInput" placeholder="Entrez le code">
+    <br>
+    <button onclick="checkCode()">Valider</button>
+</div>
+
+<script>
+let clicksRequired = 5;
+let clicks = 0;
+let gameArea = document.getElementById("gameArea");
+
+function createOrb() {
+    let orb = document.createElement("div");
+    orb.className = "orb";
+
+    orb.style.top = Math.random() * (window.innerHeight - 100) + "px";
+    orb.style.left = Math.random() * (window.innerWidth - 100) + "px";
+
+    orb.onclick = function() {
+        clicks++;
+        orb.remove();
+
+        if(clicks >= clicksRequired) {
+            startMemoryTest();
+        } else {
+            createOrb();
+        }
+    };
+
+    gameArea.appendChild(orb);
+}
+
+createOrb();
+
+function startMemoryTest() {
+    document.getElementById("instruction").innerText = "Synchronisation validée.";
+    document.getElementById("memoryTest").classList.remove("hidden");
+
+    let code = Math.floor(100 + Math.random() * 900);
+    document.getElementById("codeDisplay").innerText = code;
+
+    window.generatedCode = code;
+
+    setTimeout(() => {
+        document.getElementById("codeDisplay").innerText = "";
+    }, 2000);
+}
+
+function checkCode() {
+    let input = document.getElementById("codeInput").value;
+
+    if(input == window.generatedCode) {
+        window.location.href = "archives.html";
+    } else {
+        alert("Code incorrect. Vérification échouée.");
+        location.reload();
+    }
+}
+</script>
+
+</body>
+</html>
