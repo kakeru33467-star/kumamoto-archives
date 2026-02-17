@@ -466,18 +466,19 @@ footer {
 }
 
 .incident-block {
-    display: flex;
+    display: inline-flex;     /* ← IMPORTANT */
     align-items: center;
-    gap: 30px;
-    margin-top: 25px;
-    width: fit-content;      /* largeur adaptée au contenu */
+    gap: 20px;                /* un peu moins large */
+    margin-top: 15px;
 }
 
+
 .incident-text {
-    max-width: 360px;
+    max-width: 300px;
     font-size: 14px;
     color: #cbd5e1;
 }
+
 
 
 .incident-image {
