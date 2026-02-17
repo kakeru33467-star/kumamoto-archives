@@ -165,25 +165,20 @@ footer {
     background-position: center;
     background-repeat: no-repeat;
 
-    height: 380px;
+    height: 260px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     position: relative;
-    overflow: hidden;
 }
 
 .orphan-header::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.15),
-        rgba(0,0,0,0.2)
-    );
+    background: rgba(0,0,0,0.25);
 }
 
 .orphan-header h1 {
@@ -191,23 +186,47 @@ footer {
     z-index: 1;
 
     color: white;
-    font-size: 58px;
+    font-size: 48px;
     font-weight: 800;
 
-    text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+    text-shadow: 0 5px 20px rgba(0,0,0,0.7);
 }
 
-/* Section plus lumineuse */
-.orphan-section {
-    background: #ffffff;
+/* Sections plus sobres */
+
+.orphan-intro,
+.orphan-stats,
+.orphan-pricing {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+/* Liste propre */
+
+.orphan-stats ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.orphan-stats li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Galerie enfants */
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
     border-radius: 12px;
 }
 
-/* Call To Action */
-.orphan-cta {
-    text-align: center;
-    background: linear-gradient(90deg, #f1faee, #e0fbfc);
-    border-radius: 14px;
-    padding: 50px;
-}
 
