@@ -400,11 +400,11 @@ footer {
 }
 
 .internal-container {
-    width: 85%;
+    max-width: 900px;
     margin: 60px auto;
-    display: flex;
-    flex-direction: column;
+    padding: 0 20px;
 }
+
 
 
 .internal-card {
