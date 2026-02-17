@@ -11,7 +11,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* ================= HEADER ================= */
+/* ================= HEADER ACCUEIL ================= */
 
 header {
     position: relative;
@@ -30,7 +30,6 @@ header {
     overflow: hidden;
 }
 
-/* Overlay plus lumineux */
 header::before {
     content: "";
     position: absolute;
@@ -42,22 +41,17 @@ header::before {
     );
 }
 
-/* Conteneur du titre */
 header h1 {
     position: relative;
     z-index: 1;
 
+    color: #ffffff;
     font-size: 64px;
     font-weight: 900;
     letter-spacing: 4px;
 
-    color: #ffffff;   /* ← ICI on met du blanc pur */
-
-    text-shadow:
-        0 4px 20px rgba(0,0,0,0.8),
-        0 0 10px rgba(0,0,0,0.6);
+    text-shadow: 0 6px 20px rgba(0,0,0,0.8);
 }
-
 
 /* ================= NAVIGATION ================= */
 
@@ -74,13 +68,28 @@ nav a {
     font-weight: bold;
     font-size: 15px;
     letter-spacing: 1px;
+    position: relative;
     transition: all 0.25s ease;
 }
 
-/* Effet au survol */
 nav a:hover {
     color: #a8dadc;
-    transform: translateY(-2px);
+}
+
+nav a.active {
+    color: #a8dadc;
+}
+
+nav a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background-color: #a8dadc;
+    border-radius: 2px;
 }
 
 /* ================= SECTIONS ================= */
@@ -123,10 +132,6 @@ nav a:hover {
 
 .card-content {
     padding: 22px;
-}
-
-.card-content h3 {
-    margin-top: 0;
 }
 
 /* ================= BOUTONS ================= */
@@ -192,7 +197,7 @@ footer {
     text-shadow: 0 5px 20px rgba(0,0,0,0.7);
 }
 
-/* Sections plus sobres */
+/* ================= ORPHELINAT SECTIONS ================= */
 
 .orphan-intro,
 .orphan-stats,
@@ -201,8 +206,6 @@ footer {
     border-radius: 12px;
     margin-bottom: 40px;
 }
-
-/* Liste propre */
 
 .orphan-stats ul {
     list-style: none;
@@ -213,8 +216,6 @@ footer {
     padding: 8px 0;
     border-bottom: 1px solid #eee;
 }
-
-/* Galerie enfants */
 
 .gallery {
     display: grid;
@@ -228,5 +229,3 @@ footer {
     object-fit: cover;
     border-radius: 12px;
 }
-
-
