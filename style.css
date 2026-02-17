@@ -6,14 +6,21 @@ body {
 }
 
 header {
-    background: url('images/kumamoto.jpg') center/cover no-repeat;
+    background-image: url("images/kumamoto.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
     height: 350px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     color: white;
     text-shadow: 0 0 10px rgba(0,0,0,0.7);
 }
+
 
 header h1 {
     font-size: 48px;
