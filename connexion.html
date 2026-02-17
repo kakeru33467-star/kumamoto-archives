@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portail Administratif</title>
+    <script>
+        function checkPassword() {
+            var password = document.getElementById("password").value;
+            if(password === "hikari2004") {
+                window.location.href = "archives.html";
+            } else {
+                alert("Accès refusé.");
+            }
+        }
+    </script>
+</head>
+<body style="font-family: Arial; background-color:#111; color:white; padding:40px;">
+
+<h1>Portail Administratif Sécurisé</h1>
+
+<p>Accès réservé au personnel autorisé.</p>
+
+<input type="text" placeholder="Identifiant"><br><br>
+<input type="password" id="password" placeholder="Mot de passe"><br><br>
+
+<button onclick="checkPassword()">Connexion</button>
+
+</body>
+</html>
