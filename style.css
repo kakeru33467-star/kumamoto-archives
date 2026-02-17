@@ -333,3 +333,27 @@ footer {
     font-size: 12px;
     color: #64748b;
 }
+/* Bouton retour accueil - base interne */
+
+.database-back-home {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+
+.database-back-home a {
+    background: rgba(30, 41, 59, 0.9);
+    color: #a78bfa;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    border: 1px solid #334155;
+    transition: 0.25s ease;
+}
+
+.database-back-home a:hover {
+    background: #1e293b;
+    border-color: #a78bfa;
+    box-shadow: 0 0 15px rgba(167,139,250,0.4);
+}
