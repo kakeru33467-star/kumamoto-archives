@@ -465,16 +465,17 @@ footer {
 .incident-block {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 30px;
     margin-top: 25px;
-    max-width: 850px;   /* limite la largeur totale du bloc */
+    width: fit-content;      /* largeur adaptée au contenu */
 }
 
 .incident-text {
-    max-width: 380px;
+    max-width: 360px;
     font-size: 14px;
     color: #cbd5e1;
 }
+
 
 .incident-image {
     width: 300px;
