@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Portail Administratif</title>
+    <title>Portail Administratif Sécurisé</title>
     <script>
         function checkPassword() {
             var password = document.getElementById("password").value;
-            if(password === "hikari2004") {
+
+            if(password === "jumeaux2006") {
                 window.location.href = "archives.html";
             } else {
-                alert("Accès refusé.");
+                alert("Mot de passe incorrect.");
             }
         }
     </script>
 </head>
-<body style="font-family: Arial; background-color:#111; color:white; padding:40px;">
+
+<body style="font-family: Arial; background-color:#0d0d0d; color:white; padding:60px; text-align:center;">
 
 <h1>Portail Administratif Sécurisé</h1>
 
 <p>Accès réservé au personnel autorisé.</p>
 
-<input type="text" placeholder="Identifiant"><br><br>
-<input type="password" id="password" placeholder="Mot de passe"><br><br>
+<br>
 
-<button onclick="checkPassword()">Connexion</button>
+<input type="password" id="password" placeholder="Mot de passe"
+style="padding:10px; width:250px;">
+
+<br><br>
+
+<button onclick="checkPassword()"
+style="padding:10px 25px; cursor:pointer;">
+Connexion
+</button>
 
 </body>
 </html>
