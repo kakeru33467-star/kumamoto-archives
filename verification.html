@@ -162,8 +162,37 @@ function startMemoryPhase() {
 }
 
 function nextMemoryLevel() {
-    let length = 2 + memoryLevel; // 3,4,5 chiffres
-    let displayTime = 2500 - (memoryLevel * 500);
+
+    let length;
+    let displayTime;
+    let display = document.getElementById("codeDisplay");
+
+    if (memoryLevel === 1) {
+        length = 3;
+        displayTime = 1800;
+        display.style.color = "#ffffff";
+        display.style.opacity = "1";
+        display.style.filter = "none";
+    }
+
+    if (memoryLevel === 2) {
+        length = 4;
+        displayTime = 1200;
+        display.style.color = "#dddddd";
+        display.style.opacity = "0.85";
+        display.style.filter = "blur(0.5px)";
+    }
+
+    if (memoryLevel === 3) {
+        length = 5;
+        displayTime = 900;
+        display.style.color = "#c084fc";
+        display.style.opacity = "0.75";
+        display.style.filter = "blur(1px)";
+        display.style.position = "absolute";
+        display.style.top = (Math.random() * (window.innerHeight - 200) + 100) + "px";
+        display.style.left = (Math.random() * (window.innerWidth - 200) + 100) + "px";
+    }
 
     let code = "";
     for (let i = 0; i < length; i++) {
@@ -171,22 +200,15 @@ function nextMemoryLevel() {
     }
 
     window.generatedCode = code;
-
-    let display = document.getElementById("codeDisplay");
     display.innerText = code;
-
-    if (memoryLevel === 3) {
-        display.style.color = "#c084fc";
-        display.style.position = "absolute";
-        display.style.top = (Math.random() * 200 + 100) + "px";
-        display.style.left = (Math.random() * 200 + 100) + "px";
-    }
 
     setTimeout(() => {
         display.innerText = "";
         display.style.position = "static";
+        display.style.filter = "none";
     }, displayTime);
 }
+
 
 function checkCode() {
     let input = document.getElementById("codeInput").value;
