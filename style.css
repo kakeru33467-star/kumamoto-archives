@@ -462,16 +462,19 @@ footer {
     font-style: italic;
 }
 
-
-
 .incident-block {
     display: flex;
-    gap: 40px;              /* espace plus propre */
-    align-items: center;    /* centre verticalement */
+    align-items: center;
+    gap: 40px;
     margin-top: 25px;
+    max-width: 850px;   /* limite la largeur totale du bloc */
 }
 
-
+.incident-text {
+    max-width: 380px;
+    font-size: 14px;
+    color: #cbd5e1;
+}
 
 .incident-image {
     width: 300px;
@@ -481,11 +484,4 @@ footer {
 }
 
 
-.incident-text {
-    flex: 0 0 420px;   /* largeur fixe plus raisonnable */
-    max-width: 420px;
-    font-size: 14px;
-    color: #cbd5e1;
-    align-self: center;   /* centre verticalement par rapport à l’image */
-}
 
