@@ -466,10 +466,11 @@ footer {
 
 .incident-block {
     display: flex;
-    gap: 30px;
-    align-items: center; /* centre verticalement le texte */
-    margin-top: 20px;
+    gap: 40px;              /* espace plus propre */
+    align-items: center;    /* centre verticalement */
+    margin-top: 25px;
 }
+
 
 
 .incident-image {
@@ -481,7 +482,10 @@ footer {
 
 
 .incident-text {
-    flex: 1;
+    flex: 0 0 420px;   /* largeur fixe plus raisonnable */
+    max-width: 420px;
     font-size: 14px;
     color: #cbd5e1;
+    align-self: center;   /* centre verticalement par rapport à l’image */
 }
+
