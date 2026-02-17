@@ -21,7 +21,7 @@ header {
     background-position: center;
     background-repeat: no-repeat;
 
-    height: 400px;
+    height: 420px;
 
     display: flex;
     align-items: center;
@@ -30,42 +30,39 @@ header {
     overflow: hidden;
 }
 
-/* Overlay plus clair et plus élégant */
+/* Overlay plus lumineux */
 header::before {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.25),
-        rgba(0, 0, 0, 0.15)
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.25)
     );
 }
 
-/* Nouveau style du titre */
+/* Conteneur du titre */
 header h1 {
     position: relative;
     z-index: 1;
 
     font-size: 64px;
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 4px;
 
-    color: #ffffff;
+    color: white;
 
-    /* Contour net */
-    -webkit-text-stroke: 1px rgba(0,0,0,0.4);
+    padding: 20px 60px;
 
-    /* Ombre profonde */
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+
     text-shadow:
-        0 4px 20px rgba(0,0,0,0.6),
-        0 0 25px rgba(0,0,0,0.4);
-
-    /* Fond semi-transparent derrière le texte */
-    padding: 15px 40px;
-    backdrop-filter: blur(4px);
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 12px;
+        0 4px 20px rgba(0,0,0,0.9),
+        0 0 20px rgba(255,255,255,0.15);
 }
 
 /* ================= NAVIGATION ================= */
