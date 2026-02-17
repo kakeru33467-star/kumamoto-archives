@@ -100,78 +100,124 @@
 </div>
 
 <script>
-let clicksRequired = 5;
-let clicks = 0;
-let attempts = 0;
-const maxAttempts = 3;
+let score = 0;
+let missed = 0;
+let requiredScore = 10;
+let maxMissed = 3;
+let gameActive = true;
 
-function createOrb() {
+function spawnOrb() {
+    if (!gameActive) return;
+
     let orb = document.createElement("div");
     orb.className = "orb";
 
     orb.style.top = Math.random() * (window.innerHeight - 100) + "px";
     orb.style.left = Math.random() * (window.innerWidth - 100) + "px";
 
+    let lifetime = 800 + Math.random() * 700; // durée variable
+
     orb.onclick = function() {
-        clicks++;
+        score++;
         orb.remove();
 
-        if(clicks >= clicksRequired) {
-            startMemoryTest();
-        } else {
-            createOrb();
+        if (score >= requiredScore) {
+            gameActive = false;
+            startMemoryPhase();
         }
     };
 
     document.body.appendChild(orb);
-}
-
-createOrb();
-
-function startMemoryTest() {
-    document.querySelectorAll(".orb").forEach(o => o.remove());
-
-    document.getElementById("instruction").innerText =
-        "Synchronisation primaire validée.";
-
-    document.getElementById("memoryTest").style.display = "block";
-
-    generateCode();
-}
-
-function generateCode() {
-    let code = Math.floor(100 + Math.random() * 900);
-    window.generatedCode = code;
-
-    document.getElementById("codeDisplay").innerText = code;
 
     setTimeout(() => {
-        document.getElementById("codeDisplay").innerText = "";
-    }, 2000);
+        if (document.body.contains(orb)) {
+            orb.remove();
+            missed++;
+
+            if (missed >= maxMissed) {
+                alert("Flux instable. Synchronisation échouée.");
+                window.location.href = "connexion.html";
+            }
+        }
+    }, lifetime);
+
+    setTimeout(spawnOrb, 500);
+}
+
+spawnOrb();
+
+/* ================= PHASE MÉMOIRE ================= */
+
+let memoryLevel = 1;
+let attempts = 0;
+const maxAttempts = 3;
+
+function startMemoryPhase() {
+    document.querySelectorAll(".orb").forEach(o => o.remove());
+    document.getElementById("instruction").innerText =
+        "Lecture de l'empreinte énergétique.";
+
+    document.getElementById("memoryTest").style.display = "block";
+    nextMemoryLevel();
+}
+
+function nextMemoryLevel() {
+    let length = 2 + memoryLevel; // 3,4,5 chiffres
+    let displayTime = 2500 - (memoryLevel * 500);
+
+    let code = "";
+    for (let i = 0; i < length; i++) {
+        code += Math.floor(Math.random() * 10);
+    }
+
+    window.generatedCode = code;
+
+    let display = document.getElementById("codeDisplay");
+    display.innerText = code;
+
+    if (memoryLevel === 3) {
+        display.style.color = "#c084fc";
+        display.style.position = "absolute";
+        display.style.top = (Math.random() * 200 + 100) + "px";
+        display.style.left = (Math.random() * 200 + 100) + "px";
+    }
+
+    setTimeout(() => {
+        display.innerText = "";
+        display.style.position = "static";
+    }, displayTime);
 }
 
 function checkCode() {
     let input = document.getElementById("codeInput").value;
 
-    if(input == window.generatedCode) {
-        document.body.classList.add("fade");
-        setTimeout(() => {
-            window.location.href = "archives.html";
-        }, 1000);
+    if (input === window.generatedCode) {
+        memoryLevel++;
+
+        if (memoryLevel > 3) {
+            document.body.classList.add("fade");
+            setTimeout(() => {
+                window.location.href = "archives.html";
+            }, 1000);
+        } else {
+            document.getElementById("codeInput").value = "";
+            nextMemoryLevel();
+        }
     } else {
         attempts++;
 
-        if(attempts >= maxAttempts) {
-            alert("Instabilité critique détectée.\nAccès révoqué.");
+        if (attempts >= maxAttempts) {
+            alert("Empreinte rejetée. Accès révoqué.");
             window.location.href = "connexion.html";
         } else {
-            alert("Empreinte instable.\nTentatives restantes : " + (maxAttempts - attempts));
-            generateCode();
-            document.getElementById("codeInput").value = "";
+            alert("Erreur. Tentatives restantes : " + (maxAttempts - attempts));
+            memoryLevel = 1;
+            nextMemoryLevel();
         }
     }
 }
 </script>
+
 
 </body>
 </html>
