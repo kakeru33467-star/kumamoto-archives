@@ -21,7 +21,7 @@ header {
     background-position: center;
     background-repeat: no-repeat;
 
-    height: 380px;
+    height: 400px;
 
     display: flex;
     align-items: center;
@@ -30,36 +30,42 @@ header {
     overflow: hidden;
 }
 
-/* Overlay sombre pour lisibilité */
+/* Overlay plus clair et plus élégant */
 header::before {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.45),
-        rgba(0, 0, 0, 0.25)
+        rgba(0, 0, 0, 0.25),
+        rgba(0, 0, 0, 0.15)
     );
 }
 
-/* Titre stylisé */
+/* Nouveau style du titre */
 header h1 {
     position: relative;
     z-index: 1;
 
-    font-size: 56px;
-    letter-spacing: 3px;
-    font-weight: 700;
+    font-size: 64px;
+    font-weight: 800;
+    letter-spacing: 4px;
 
-    /* Dégradé élégant */
-    background: linear-gradient(90deg, #ffffff, #f1faee);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ffffff;
 
-    /* Contour léger */
+    /* Contour net */
+    -webkit-text-stroke: 1px rgba(0,0,0,0.4);
+
+    /* Ombre profonde */
     text-shadow:
-        0 2px 8px rgba(0,0,0,0.8),
-        0 0 15px rgba(255,255,255,0.2);
+        0 4px 20px rgba(0,0,0,0.6),
+        0 0 25px rgba(0,0,0,0.4);
+
+    /* Fond semi-transparent derrière le texte */
+    padding: 15px 40px;
+    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
 }
 
 /* ================= NAVIGATION ================= */
