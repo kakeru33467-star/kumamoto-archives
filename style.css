@@ -156,3 +156,58 @@ footer {
     padding: 25px;
     font-size: 14px;
 }
+
+/* ================= ORPHELINAT HEADER ================= */
+
+.orphan-header {
+    background-image: url("images/orphanage.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    height: 380px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.orphan-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.15),
+        rgba(0,0,0,0.2)
+    );
+}
+
+.orphan-header h1 {
+    position: relative;
+    z-index: 1;
+
+    color: white;
+    font-size: 58px;
+    font-weight: 800;
+
+    text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+}
+
+/* Section plus lumineuse */
+.orphan-section {
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+/* Call To Action */
+.orphan-cta {
+    text-align: center;
+    background: linear-gradient(90deg, #f1faee, #e0fbfc);
+    border-radius: 14px;
+    padding: 50px;
+}
+
