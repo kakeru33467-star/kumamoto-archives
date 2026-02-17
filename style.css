@@ -6,6 +6,8 @@ body {
 }
 
 header {
+    position: relative;
+
     background-image: url("images/kumamoto.jpg");
     background-size: cover;
     background-position: center;
@@ -16,13 +18,29 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    overflow: hidden;
 }
 
+/* Overlay sombre pour améliorer la lisibilité */
+header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+}
 
-
+/* Style du titre */
 header h1 {
+    position: relative;
+    z-index: 1;
+
+    color: white;
     font-size: 48px;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
 }
+
 
 nav {
     background-color: #1d3557;
