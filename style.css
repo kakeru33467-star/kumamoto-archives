@@ -454,15 +454,6 @@ footer {
     border-radius: 4px;
     margin-top: 10px;
 }
-.incident-image {
-    max-width: 420px;
-    width: 100%;
-    display: block;
-    margin: 25px auto;
-    border-radius: 6px;
-    border: 1px solid #334155;
-    filter: contrast(1.05) brightness(0.95);
-}
 
 .incident-caption {
     font-size: 13px;
@@ -475,10 +466,11 @@ footer {
 
 .incident-block {
     display: flex;
-    gap: 25px;
-    align-items: flex-start;
-    margin-top: 25px;
+    gap: 30px;
+    align-items: center; /* centre verticalement le texte */
+    margin-top: 20px;
 }
+
 
 .incident-image {
     width: 300px;
@@ -486,6 +478,7 @@ footer {
     border: 1px solid #334155;
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
 }
+
 
 .incident-text {
     flex: 1;
