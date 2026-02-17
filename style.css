@@ -466,26 +466,27 @@ footer {
 }
 
 .incident-block {
-    display: inline-flex;     /* ← IMPORTANT */
+    display: flex;
     align-items: center;
-    gap: 20px;                /* un peu moins large */
-    margin-top: 15px;
+    gap: 25px;
+    margin-top: 25px;
 }
 
-
-.incident-text {
-    max-width: 300px;
-    font-size: 14px;
-    color: #cbd5e1;
+.incident-left {
+    display: flex;
+    flex-direction: column;
+    width: 300px; /* même largeur que l'image */
 }
-
-
 
 .incident-image {
-    width: 300px;
+    width: 100%;
     border-radius: 8px;
     border: 1px solid #334155;
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+
+.incident-text {
+    max-width: 380px;
 }
 
 
