@@ -454,3 +454,12 @@ footer {
     border-radius: 4px;
     margin-top: 10px;
 }
+.incident-image {
+    max-width: 420px;
+    width: 100%;
+    display: block;
+    margin: 25px auto;
+    border-radius: 6px;
+    border: 1px solid #334155;
+    filter: contrast(1.05) brightness(0.95);
+}
