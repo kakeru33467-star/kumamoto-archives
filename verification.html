@@ -1,58 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vérification Altérique</title>
+    <title>Synchronisation Altérique</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-            background: #0f172a;
-            color: white;
+            margin: 0;
+            background: radial-gradient(circle at center, #1e1b4b, #0f0c29);
+            color: #e0e7ff;
+            font-family: 'Segoe UI', sans-serif;
             text-align: center;
-            font-family: Arial;
+            overflow: hidden;
         }
 
-        .game-container {
-            margin-top: 50px;
+        h1 {
+            margin-top: 40px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(139,92,246,0.8);
+        }
+
+        #instruction {
+            opacity: 0.8;
+            margin-bottom: 30px;
         }
 
         .orb {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: radial-gradient(circle, #38bdf8, #0ea5e9);
             position: absolute;
             cursor: pointer;
-            box-shadow: 0 0 20px #38bdf8;
+            background: radial-gradient(circle, #c084fc, #7c3aed);
+            box-shadow: 0 0 30px #a855f7, 0 0 60px #7c3aed;
+            animation: pulse 1.5s infinite alternate;
         }
 
-        .hidden {
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+
+        #memoryTest {
             display: none;
+            margin-top: 50px;
+        }
+
+        #codeDisplay {
+            font-size: 40px;
+            letter-spacing: 10px;
+            margin: 20px;
+            text-shadow: 0 0 20px #a855f7;
         }
 
         input {
             padding: 10px;
-            font-size: 18px;
+            font-size: 20px;
             text-align: center;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
         }
 
         button {
-            padding: 10px 20px;
-            margin-top: 10px;
+            padding: 10px 25px;
+            margin-top: 15px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: #a855f7;
+        }
+
+        .fade {
+            animation: fadeout 1s forwards;
+        }
+
+        @keyframes fadeout {
+            to { opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-<h1>Vérification secondaire requise</h1>
-<p id="instruction">Stabilisez le flux altérique.</p>
+<h1>Rituel de Synchronisation</h1>
+<p id="instruction">Stabilisez les flux altériques instables.</p>
 
-<div class="game-container" id="gameArea"></div>
-
-<div id="memoryTest" class="hidden">
-    <h2>Mémorisation requise</h2>
-    <p id="codeDisplay"></p>
-    <input type="text" id="codeInput" placeholder="Entrez le code">
+<div id="memoryTest">
+    <h2>Lecture de votre empreinte énergétique</h2>
+    <div id="codeDisplay"></div>
+    <input type="text" id="codeInput" placeholder="Reproduisez le sceau">
     <br>
     <button onclick="checkCode()">Valider</button>
 </div>
@@ -60,7 +102,6 @@
 <script>
 let clicksRequired = 5;
 let clicks = 0;
-let gameArea = document.getElementById("gameArea");
 
 function createOrb() {
     let orb = document.createElement("div");
@@ -80,19 +121,23 @@ function createOrb() {
         }
     };
 
-    gameArea.appendChild(orb);
+    document.body.appendChild(orb);
 }
 
 createOrb();
 
 function startMemoryTest() {
-    document.getElementById("instruction").innerText = "Synchronisation validée.";
-    document.getElementById("memoryTest").classList.remove("hidden");
+    document.querySelectorAll(".orb").forEach(o => o.remove());
+
+    document.getElementById("instruction").innerText =
+        "Synchronisation primaire validée.";
+
+    document.getElementById("memoryTest").style.display = "block";
 
     let code = Math.floor(100 + Math.random() * 900);
-    document.getElementById("codeDisplay").innerText = code;
-
     window.generatedCode = code;
+
+    document.getElementById("codeDisplay").innerText = code;
 
     setTimeout(() => {
         document.getElementById("codeDisplay").innerText = "";
@@ -103,9 +148,12 @@ function checkCode() {
     let input = document.getElementById("codeInput").value;
 
     if(input == window.generatedCode) {
-        window.location.href = "archives.html";
+        document.body.classList.add("fade");
+        setTimeout(() => {
+            window.location.href = "archives.html";
+        }, 1000);
     } else {
-        alert("Code incorrect. Vérification échouée.");
+        alert("Empreinte instable. Rituel interrompu.");
         location.reload();
     }
 }
