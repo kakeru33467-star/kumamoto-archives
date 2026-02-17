@@ -402,7 +402,10 @@ footer {
 .internal-container {
     width: 85%;
     margin: 60px auto;
+    display: flex;
+    flex-direction: column;
 }
+
 
 .internal-card {
     background: #1e293b;
