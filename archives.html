@@ -1,36 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Archives Internes – Hikari no Mori</title>
+    <title>Base de données interne</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body style="font-family: Arial; background-color:black; color:white; padding:50px;">
+<body class="database-body">
 
-<h1>Base de Données Interne</h1>
+<div class="database-header">
+    <h1>Base de données interne</h1>
+    <div class="database-sub">
+        Accès validé – Niveau 4
+    </div>
+</div>
 
-<hr>
+<div class="database-container">
 
-<h2>Dossiers disponibles :</h2>
+    <div class="dossier-card" onclick="window.location.href='jumeaux.html'">
+        <div class="badge">Confidentiel</div>
+        <div class="dossier-title">Dossier 07 – Projet Jumeaux</div>
+        <div class="dossier-desc">
+            Synchronisation altérique croisée – Données expérimentales sensibles.
+        </div>
+    </div>
 
-<ul>
-<li>
-<a href="experience-ratee.html" style="color:lightblue;">
-Dossier 09 – Expériences échouées
-</a>
-</li>
+    <div class="dossier-card" onclick="window.location.href='boitemail.html'">
+        <div class="badge">Interne</div>
+        <div class="dossier-title">Messagerie interne</div>
+        <div class="dossier-desc">
+            Communications administratives et rapports confidentiels.
+        </div>
+    </div>
 
-<li>
-<a href="jumeaux.html" style="color:lightblue;">
-Dossier 12 – Expérience : Jumeaux
-</a>
-</li>
+    <div class="dossier-card" onclick="window.location.href='experience-ratee.html'">
+        <div class="badge">Restreint</div>
+        <div class="dossier-title">Dossier 09 – Expériences échouées</div>
+        <div class="dossier-desc">
+            Rapports des sujets non viables – Consultation limitée.
+        </div>
+    </div>
 
-<li>
-<a href="boitemail.html" style="color:lightblue;">
-Messagerie interne – Nouveau message (1)
-</a>
-</li>
-</ul>
+</div>
+
+<div class="database-footer">
+    Système Orphelinat Hikari no Mori – Version 3.2.17
+</div>
 
 </body>
 </html>
