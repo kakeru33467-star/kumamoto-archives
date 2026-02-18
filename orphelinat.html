@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Orphelinat Hikari no Mori</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header class="orphan-header">
@@ -17,16 +19,18 @@
     <a href="orphelinat.html" class="active">Orphelinat Hikari no Mori</a>
 </nav>
 
+<!-- Présentation -->
 <section class="section orphan-intro">
     <h2>Présentation</h2>
     <p>
-        Fondé en 2120, l’Orphelinat Hikari no Mori est un établissement
+        Fondé en 1987, l’Orphelinat Hikari no Mori est un établissement
         spécialisé dans l’accompagnement éducatif et social des mineurs.
         Situé à Kumamoto, l’établissement offre un environnement sécurisé,
         structuré et bienveillant.
     </p>
 </section>
 
+<!-- Capacité -->
 <section class="section orphan-stats">
     <h2>Capacité & Encadrement</h2>
     <ul>
@@ -37,36 +41,7 @@
     </ul>
 </section>
 
-<section class="section orphan-direction">
-
-    <h2>Direction de l’établissement</h2>
-
-    <p class="orphan-paragraph">
-        Officiellement nommée directrice il y a dix-sept ans, Madame Kaede Ishimori est reconnue pour sa gestion rigoureuse et son sens aigu de la discipline institutionnelle. Issue d’un parcours juridique spécialisé dans les structures privées à régime particulier, elle s’est progressivement orientée vers la supervision éducative après le décès de son époux, ancien médecin militaire. Intègre et méthodique, elle veille personnellement aux protocoles de sécurité et à la confidentialité des dossiers internes, maintenant une réputation d’établissement exemplaire au sein de la préfecture.
-    </p>
-
-    <p class="orphan-paragraph">
-        Résidant dans une aile réservée du bâtiment administratif, la Matriarche est connue pour effectuer elle-même ses rondes nocturnes. Chaque passage suit un ordre précis : 
-        <strong>Portail Nord</strong>, 
-        <strong>Aile Ouest</strong>, 
-        <strong>Salle des Archives</strong>, 
-        <strong>Stockage Interne</strong>, 
-        <strong>Local Technique</strong>, 
-        <strong>Entrepôt</strong>, 
-        <strong>Annexe Médicale</strong>, 
-        <strong>Noyau Central</strong>.
-    </p>
-
-    <div class="orphan-meta">
-        <p><strong>Numéro d’enregistrement institutionnel :</strong> JP-KM-ORPH-2147-88A</p>
-        <p><strong>Identifiant administratif interne :</strong> KM-PRF-07-ALTR-001</p>
-        <p><strong>Localisation :</strong> Kumamoto, Préfecture de Kumamoto, Japon – 32.8031° N, 130.7079° E</p>
-    </div>
-
-</section>
-
-
-    
+<!-- Tarification -->
 <section class="section orphan-pricing">
     <h2>Tarification & Subventions</h2>
     <p>
@@ -79,6 +54,49 @@
     </p>
 </section>
 
+<!-- Direction -->
+<section class="section orphan-direction">
+
+    <h2>Direction de l’établissement</h2>
+
+    <p class="orphan-paragraph">
+        Officiellement nommée directrice il y a dix-sept ans, Madame Kaede Ishimori est reconnue pour sa gestion rigoureuse et son sens aigu de la discipline institutionnelle. Issue d’un parcours juridique spécialisé dans les structures privées à régime particulier, elle s’est progressivement orientée vers la supervision éducative après le décès de son époux, ancien médecin militaire. Intègre et méthodique, elle veille personnellement aux protocoles de sécurité et à la confidentialité des dossiers internes, maintenant une réputation d’établissement exemplaire au sein de la préfecture.
+    </p>
+
+    <p class="orphan-paragraph">
+        Résidant dans une aile réservée du bâtiment administratif, la Matriarche est connue pour effectuer elle-même ses rondes nocturnes. Chaque passage suit un ordre précis : 
+        <span class="round-sequence">
+        Portail Nord, Aile Ouest, Salle des Archives, Stockage Interne, Local Technique, Entrepôt, Annexe Médicale, Noyau Central
+        </span>.
+    </p>
+
+    <div class="orphan-meta">
+        <p><strong>Numéro d’enregistrement institutionnel :</strong> JP-KM-ORPH-2147-88A</p>
+        <p><strong>Identifiant administratif interne :</strong> KM-PRF-07-ALTR-001</p>
+        <p>
+            <strong>Localisation :</strong> 
+            Kumamoto, Préfecture de Kumamoto, Japon – 
+            <a href="https://www.google.com/maps?q=32.8031,130.7079" target="_blank">
+            32.8031° N, 130.7079° E
+            </a>
+        </p>
+    </div>
+
+    <!-- Carte Google -->
+    <div class="orphan-map">
+        <iframe 
+            src="https://maps.google.com/maps?q=32.8031,130.7079&z=15&output=embed"
+            width="100%" 
+            height="300" 
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+    </div>
+
+</section>
+
+<!-- Galerie -->
 <section class="section">
     <h2>Vie quotidienne</h2>
 
@@ -89,6 +107,7 @@
     </div>
 </section>
 
+<!-- Accès Admin -->
 <section class="section admin-access">
     <a href="connexion.html" class="admin-button">
         Accès administratif
