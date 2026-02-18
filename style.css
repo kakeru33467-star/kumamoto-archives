@@ -825,3 +825,43 @@ footer {
 .subpage .band-dark p {
     opacity: 0.95;
 }
+
+/* ============================= */
+/* HERO BANNER INSTITUTIONS */
+/* ============================= */
+
+.hero-banner {
+    height: 380px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-overlay {
+    background: rgba(0,0,0,0.45);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overlay h1 {
+    color: white;
+    font-size: 42px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+/* Images spécifiques */
+
+.lycee-hero {
+    background-image: url("images/lycee.jpg");
+}
+
+.shinrin-hero {
+    background-image: url("images/centre.jpg");
+}
