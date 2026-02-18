@@ -124,6 +124,10 @@
 
 let score = 0;
 let requiredScore = 10;
+
+let missed = 0;
+let maxMissed = 3;   // Nombre de vertes ratées autorisées
+
 let gameActive = true;
 let spawnSpeed = 600;
 
@@ -134,7 +138,7 @@ function spawnOrb() {
     let orb = document.createElement("div");
     orb.classList.add("orb");
 
-    const isRed = Math.random() < 0.25; // 25% rouges
+    const isRed = Math.random() < 0.25;
 
     if (isRed) {
         orb.classList.add("red");
@@ -145,7 +149,9 @@ function spawnOrb() {
     orb.style.top = Math.random() * (window.innerHeight - 100) + "px";
     orb.style.left = Math.random() * (window.innerWidth - 100) + "px";
 
-    let lifetime = isRed ? 900 : 1600;
+    // Les vertes disparaissent plus vite progressivement
+    let lifetime = isRed ? 800 : (1400 - score * 70);
+    if (lifetime < 500) lifetime = 500;
 
     orb.onclick = function() {
 
@@ -158,8 +164,10 @@ function spawnOrb() {
         }
 
         score++;
+
         document.getElementById("scoreDisplay").innerText =
-            "Stabilité : " + score + " / " + requiredScore;
+            "Stabilité : " + score + " / " + requiredScore +
+            " | Échecs : " + missed + " / " + maxMissed;
 
         orb.remove();
 
@@ -172,21 +180,34 @@ function spawnOrb() {
     document.body.appendChild(orb);
 
     setTimeout(() => {
+
         if (document.body.contains(orb)) {
+
+            // Si c'est une verte ratée
+            if (orb.classList.contains("green")) {
+                missed++;
+
+                if (missed >= maxMissed) {
+                    alert("Flux instable. Synchronisation échouée.");
+                    window.location.href = "connexion.html";
+                    return;
+                }
+            }
+
             orb.remove();
         }
+
     }, lifetime);
 
-    /* ACCELERATION PROGRESSIVE */
-    spawnSpeed -= 15;
-    if (spawnSpeed < 300) {
-        spawnSpeed = 300;
-    }
+    // Accélération apparition
+    spawnSpeed -= 10;
+    if (spawnSpeed < 300) spawnSpeed = 300;
 
     setTimeout(spawnOrb, spawnSpeed);
 }
 
 spawnOrb();
+
 
 /* ================= PHASE MEMOIRE ================= */
 
