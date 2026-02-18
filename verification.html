@@ -123,13 +123,15 @@
 /* ================= PHASE SPHERES ================= */
 
 let score = 0;
-let requiredScore = 10;
+let requiredScore = 20;
 
 let missed = 0;
-let maxMissed = 3;   // Nombre de vertes ratées autorisées
+let maxMissed = 3;
 
 let gameActive = true;
-let spawnSpeed = 600;
+let spawnSpeed = 450; // plus rapide dès le début
+
+let spawnCount = 0;
 
 function spawnOrb() {
 
@@ -138,7 +140,13 @@ function spawnOrb() {
     let orb = document.createElement("div");
     orb.classList.add("orb");
 
-    const isRed = Math.random() < 0.25;
+    spawnCount++;
+
+    // Rouge toutes les 4 à 6 apparitions environ
+    let isRed = false;
+    if (spawnCount % (4 + Math.floor(Math.random() * 3)) === 0) {
+        isRed = true;
+    }
 
     if (isRed) {
         orb.classList.add("red");
@@ -149,9 +157,15 @@ function spawnOrb() {
     orb.style.top = Math.random() * (window.innerHeight - 100) + "px";
     orb.style.left = Math.random() * (window.innerWidth - 100) + "px";
 
-    // Les vertes disparaissent plus vite progressivement
-    let lifetime = isRed ? 800 : (1400 - score * 70);
-    if (lifetime < 500) lifetime = 500;
+    // Les vertes disparaissent de plus en plus vite
+    let lifetime;
+
+    if (isRed) {
+        lifetime = 900;
+    } else {
+        lifetime = 1100 - (score * 30);
+        if (lifetime < 400) lifetime = 400;
+    }
 
     orb.onclick = function() {
 
@@ -183,7 +197,6 @@ function spawnOrb() {
 
         if (document.body.contains(orb)) {
 
-            // Si c'est une verte ratée
             if (orb.classList.contains("green")) {
                 missed++;
 
@@ -199,9 +212,9 @@ function spawnOrb() {
 
     }, lifetime);
 
-    // Accélération apparition
-    spawnSpeed -= 10;
-    if (spawnSpeed < 300) spawnSpeed = 300;
+    // Accélération plus agressive
+    spawnSpeed -= 20;
+    if (spawnSpeed < 220) spawnSpeed = 220;
 
     setTimeout(spawnOrb, spawnSpeed);
 }
