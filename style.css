@@ -792,3 +792,30 @@ footer {
     color: #333;
     font-weight: 600;
 }
+
+/* ============================= */
+/* ALIGNEMENT SECTIONS */
+/* ============================= */
+
+.section {
+    padding: 80px 10%;
+}
+
+.section h2 {
+    margin-bottom: 25px;
+}
+
+.section p {
+    max-width: 900px;
+    line-height: 1.8;
+}
+
+/* Force les sections dark à être alignées comme les light */
+.band-dark {
+    background: #1d3557;
+    color: white;
+}
+
+.band-dark p {
+    max-width: 900px;
+}
