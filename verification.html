@@ -128,7 +128,7 @@ let requiredScore = 20;
 let missed = 0;
 let maxMissed = 3;
 
-let gameActive = true;
+let gameActive = false;
 
 let spawnDelay = 400;
 let lifetime = 950;
@@ -136,15 +136,31 @@ let lifetime = 950;
 let nextRedIn = getRandomRedInterval();
 
 function getRandomRedInterval() {
-    return 3 + Math.floor(Math.random() * 3); // 3 à 5 vertes avant rouge
+    return 3 + Math.floor(Math.random() * 3); // rouge toutes les 3-5 vertes
 }
 
-function spawnOrb() {
-
-    if (!gameActive) return;
+function createOrb(isRed = false) {
 
     let orb = document.createElement("div");
     orb.classList.add("orb");
+    orb.classList.add(isRed ? "red" : "green");
+
+    orb.style.top = Math.random() * (window.innerHeight - 120) + "px";
+    orb.style.left = Math.random() * (window.innerWidth - 120) + "px";
+
+    document.body.appendChild(orb);
+
+    return orb;
+}
+
+function startGameLoop() {
+    gameActive = true;
+    spawnNextOrb();
+}
+
+function spawnNextOrb() {
+
+    if (!gameActive) return;
 
     let isRed = false;
 
@@ -155,14 +171,9 @@ function spawnOrb() {
         nextRedIn--;
     }
 
-    orb.classList.add(isRed ? "red" : "green");
+    let orb = createOrb(isRed);
 
-    orb.style.top = Math.random() * (window.innerHeight - 120) + "px";
-    orb.style.left = Math.random() * (window.innerWidth - 120) + "px";
-
-    document.body.appendChild(orb);
-
-    let timeout = setTimeout(() => {
+    let timer = setTimeout(() => {
 
         if (!gameActive) return;
 
@@ -177,19 +188,17 @@ function spawnOrb() {
             }
         }
 
-        if (orb.parentNode) orb.remove();
-
+        orb.remove();
         accelerateGame();
-        setTimeout(spawnOrb, spawnDelay);
+        setTimeout(spawnNextOrb, spawnDelay);
 
     }, isRed ? 800 : lifetime);
-
 
     orb.onclick = function() {
 
         if (!gameActive) return;
 
-        clearTimeout(timeout);
+        clearTimeout(timer);
 
         if (isRed) {
             gameActive = false;
@@ -204,7 +213,7 @@ function spawnOrb() {
             "Stabilité : " + score + " / " + requiredScore +
             " | Échecs : " + missed + " / " + maxMissed;
 
-        if (orb.parentNode) orb.remove();
+        orb.remove();
 
         if (score >= requiredScore) {
             gameActive = false;
@@ -213,7 +222,7 @@ function spawnOrb() {
         }
 
         accelerateGame();
-        setTimeout(spawnOrb, spawnDelay);
+        setTimeout(spawnNextOrb, spawnDelay);
     };
 }
 
@@ -226,7 +235,24 @@ function accelerateGame() {
     if (lifetime < 350) lifetime = 350;
 }
 
-spawnOrb();
+/* ===== BOULE DE DEMARRAGE ===== */
+
+function createStartOrb() {
+
+    let startOrb = createOrb(false);
+
+    startOrb.onclick = function() {
+
+        startOrb.remove();
+        document.getElementById("instruction").innerText =
+            "Synchronisation en cours...";
+
+        startGameLoop();
+    };
+}
+
+createStartOrb();
+
 
 
 /* ================= PHASE MEMOIRE ================= */
