@@ -131,7 +131,7 @@ let maxMissed = 3;
 let gameRunning = false;
 
 let spawnDelay = 350;
-let lifetime = 800;
+let lifetime = 750;
 
 let nextRedIn = getRandomRedInterval();
 
@@ -265,11 +265,15 @@ function cleanupOrb() {
 
 function accelerateGame() {
 
-    spawnDelay -= 12;
-    lifetime -= 18;
+    // Accélération du rythme
+    spawnDelay -= 20;
 
-    if (spawnDelay < 180) spawnDelay = 180;
-    if (lifetime < 300) lifetime = 300;
+    // Lifetime réduit très doucement
+    lifetime -= 5;
+
+    // Limites équilibrées
+    if (spawnDelay < 120) spawnDelay = 120;
+    if (lifetime < 550) lifetime = 550;
 }
 
 /* ===== AFFICHAGE ===== */
