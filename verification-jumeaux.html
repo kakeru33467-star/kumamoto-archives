@@ -52,8 +52,9 @@ let direction = {x: 0, y: 0};
 let food = randomFood();
 
 let score = 0;
-let speed = 120; // vitesse initiale
-let gameInterval;
+let speed = 120;
+let gameInterval = null;
+let gameStarted = false;
 
 function randomFood() {
     return {
@@ -62,7 +63,16 @@ function randomFood() {
     };
 }
 
+function startGame() {
+    if (!gameStarted) {
+        gameStarted = true;
+        gameInterval = setInterval(gameLoop, speed);
+    }
+}
+
 function gameLoop() {
+
+    if (direction.x === 0 && direction.y === 0) return;
 
     const head = {
         x: snake[0].x + direction.x,
@@ -88,7 +98,9 @@ function gameLoop() {
 
     // mange
     if (head.x === food.x && head.y === food.y) {
+
         score++;
+
         document.getElementById("score").innerText =
             "Fragments : " + score + " / 15";
 
@@ -101,7 +113,8 @@ function gameLoop() {
 
         // accélération progressive
         speed -= 5;
-        if (speed < 60) speed = 60;
+        if (speed < 70) speed = 70;
+
         clearInterval(gameInterval);
         gameInterval = setInterval(gameLoop, speed);
 
@@ -152,25 +165,32 @@ function victory() {
 
 document.addEventListener("keydown", e => {
 
-    if (e.key === "ArrowUp" && direction.y === 0) {
+    if (e.key === "ArrowUp" && direction.y !== 1) {
         direction = {x: 0, y: -1};
+        startGame();
     }
-    if (e.key === "ArrowDown" && direction.y === 0) {
+
+    if (e.key === "ArrowDown" && direction.y !== -1) {
         direction = {x: 0, y: 1};
+        startGame();
     }
-    if (e.key === "ArrowLeft" && direction.x === 0) {
+
+    if (e.key === "ArrowLeft" && direction.x !== 1) {
         direction = {x: -1, y: 0};
+        startGame();
     }
-    if (e.key === "ArrowRight" && direction.x === 0) {
+
+    if (e.key === "ArrowRight" && direction.x !== -1) {
         direction = {x: 1, y: 0};
+        startGame();
     }
 
 });
 
-// démarre jeu
-gameInterval = setInterval(gameLoop, speed);
+draw();
 
 </script>
+
 
 </body>
 </html>
