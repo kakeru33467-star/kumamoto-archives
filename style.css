@@ -712,3 +712,30 @@ footer {
 @keyframes fadeout {
     to { opacity: 0; }
 }
+/* ============================= */
+/* ACTUALITÉS CLIQUABLES */
+/* ============================= */
+
+.news-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.news-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    border-color: #e63946;
+}
+
+.news-card h3 {
+    transition: color 0.25s ease;
+}
+
+.news-card:hover h3 {
+    color: #e63946;
+}
