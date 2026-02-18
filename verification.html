@@ -25,21 +25,39 @@
             margin-bottom: 30px;
         }
 
+        /* ===== NOUVELLES SPHERES ===== */
+
         .orb {
             width: 70px;
             height: 70px;
             border-radius: 50%;
             position: absolute;
             cursor: pointer;
-            background: radial-gradient(circle, #c084fc, #7c3aed);
-            box-shadow: 0 0 30px #a855f7, 0 0 60px #7c3aed;
-            animation: pulse 1.5s infinite alternate;
+            animation: pulse 1.2s infinite alternate;
+        }
+
+        .green {
+            background: radial-gradient(circle, #22c55e, #15803d);
+            box-shadow: 0 0 25px #22c55e, 0 0 60px #16a34a;
+        }
+
+        .red {
+            background: radial-gradient(circle, #ef4444, #991b1b);
+            box-shadow: 0 0 25px #ef4444, 0 0 60px #dc2626;
         }
 
         @keyframes pulse {
             from { transform: scale(1); }
-            to { transform: scale(1.2); }
+            to { transform: scale(1.15); }
         }
+
+        #scoreDisplay {
+            font-size: 18px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        /* ===== PHASE MEMOIRE ===== */
 
         #memoryTest {
             display: none;
@@ -90,6 +108,7 @@
 
 <h1>Rituel de Synchronisation</h1>
 <p id="instruction">Stabilisez les flux altériques instables.</p>
+<p id="scoreDisplay">Stabilité : 0 / 10</p>
 
 <div id="memoryTest">
     <h2>Lecture de votre empreinte énergétique</h2>
@@ -100,25 +119,47 @@
 </div>
 
 <script>
+
+/* ================= PHASE SPHERES ================= */
+
 let score = 0;
-let missed = 0;
 let requiredScore = 10;
-let maxMissed = 3;
 let gameActive = true;
 
 function spawnOrb() {
+
     if (!gameActive) return;
 
     let orb = document.createElement("div");
-    orb.className = "orb";
+    orb.classList.add("orb");
+
+    const isRed = Math.random() < 0.25; // 25% rouges
+
+    if (isRed) {
+        orb.classList.add("red");
+    } else {
+        orb.classList.add("green");
+    }
 
     orb.style.top = Math.random() * (window.innerHeight - 100) + "px";
     orb.style.left = Math.random() * (window.innerWidth - 100) + "px";
 
-    let lifetime = 800 + Math.random() * 700; // durée variable
+    let lifetime = isRed ? 900 : 1600;
 
     orb.onclick = function() {
+
+        if (!gameActive) return;
+
+        if (orb.classList.contains("red")) {
+            alert("Interférence détectée. Synchronisation rompue.");
+            window.location.href = "connexion.html";
+            return;
+        }
+
         score++;
+        document.getElementById("scoreDisplay").innerText =
+            "Stabilité : " + score + " / " + requiredScore;
+
         orb.remove();
 
         if (score >= requiredScore) {
@@ -132,32 +173,31 @@ function spawnOrb() {
     setTimeout(() => {
         if (document.body.contains(orb)) {
             orb.remove();
-            missed++;
-
-            if (missed >= maxMissed) {
-                alert("Flux instable. Synchronisation échouée.");
-                window.location.href = "connexion.html";
-            }
         }
     }, lifetime);
 
-    setTimeout(spawnOrb, 500);
+    setTimeout(spawnOrb, 600);
 }
 
 spawnOrb();
 
-/* ================= PHASE MÉMOIRE ================= */
+/* ================= PHASE MEMOIRE ================= */
 
 let memoryLevel = 1;
 let attempts = 0;
 const maxAttempts = 3;
 
 function startMemoryPhase() {
+
     document.querySelectorAll(".orb").forEach(o => o.remove());
+
     document.getElementById("instruction").innerText =
         "Lecture de l'empreinte énergétique.";
 
+    document.getElementById("scoreDisplay").style.display = "none";
+
     document.getElementById("memoryTest").style.display = "block";
+
     nextMemoryLevel();
 }
 
@@ -169,7 +209,7 @@ function nextMemoryLevel() {
 
     if (memoryLevel === 1) {
         length = 3;
-        displayTime = 1000;
+        displayTime = 900;
         display.style.color = "#ffffff";
         display.style.opacity = "1";
         display.style.filter = "none";
@@ -177,7 +217,7 @@ function nextMemoryLevel() {
 
     if (memoryLevel === 2) {
         length = 4;
-        displayTime = 700;
+        displayTime = 600;
         display.style.color = "#dddddd";
         display.style.opacity = "0.85";
         display.style.filter = "blur(0.5px)";
@@ -185,7 +225,7 @@ function nextMemoryLevel() {
 
     if (memoryLevel === 3) {
         length = 5;
-        displayTime = 600;
+        displayTime = 500;
         display.style.color = "#c084fc";
         display.style.opacity = "0.75";
         display.style.filter = "blur(1px)";
@@ -209,11 +249,12 @@ function nextMemoryLevel() {
     }, displayTime);
 }
 
-
 function checkCode() {
+
     let input = document.getElementById("codeInput").value;
 
     if (input === window.generatedCode) {
+
         memoryLevel++;
 
         if (memoryLevel > 3) {
@@ -225,7 +266,9 @@ function checkCode() {
             document.getElementById("codeInput").value = "";
             nextMemoryLevel();
         }
+
     } else {
+
         attempts++;
 
         if (attempts >= maxAttempts) {
@@ -238,8 +281,8 @@ function checkCode() {
         }
     }
 }
-</script>
 
+</script>
 
 </body>
 </html>
