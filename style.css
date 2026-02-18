@@ -793,3 +793,35 @@ footer {
     font-weight: 600;
 }
 
+/* ============================= */
+/* MISE EN FORME PAGES CULTURE & EDUCATION */
+/* ============================= */
+
+.subpage .section {
+    padding: 100px 15%;
+}
+
+.subpage .section h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.subpage .section p {
+    max-width: 850px;
+    line-height: 1.9;
+    font-size: 17px;
+}
+
+/* Harmonise visuellement les sections */
+.subpage .band-dark {
+    background: #1d3557;
+    color: white;
+}
+
+.subpage .band-dark h2 {
+    color: white;
+}
+
+.subpage .band-dark p {
+    opacity: 0.95;
+}
