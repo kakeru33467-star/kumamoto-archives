@@ -22,10 +22,16 @@
 
         #instruction {
             opacity: 0.8;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
-        /* ===== NOUVELLES SPHERES ===== */
+        #scoreDisplay {
+            font-size: 18px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        /* ================= SPHERES ================= */
 
         .orb {
             width: 70px;
@@ -51,13 +57,7 @@
             to { transform: scale(1.15); }
         }
 
-        #scoreDisplay {
-            font-size: 18px;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-
-        /* ===== PHASE MEMOIRE ===== */
+        /* ================= PHASE MEMOIRE ================= */
 
         #memoryTest {
             display: none;
@@ -125,6 +125,7 @@
 let score = 0;
 let requiredScore = 10;
 let gameActive = true;
+let spawnSpeed = 600;
 
 function spawnOrb() {
 
@@ -176,7 +177,13 @@ function spawnOrb() {
         }
     }, lifetime);
 
-    setTimeout(spawnOrb, 600);
+    /* ACCELERATION PROGRESSIVE */
+    spawnSpeed -= 15;
+    if (spawnSpeed < 300) {
+        spawnSpeed = 300;
+    }
+
+    setTimeout(spawnOrb, spawnSpeed);
 }
 
 spawnOrb();
