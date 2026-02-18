@@ -95,8 +95,9 @@ nav a.active::after {
 /* ================= SECTIONS ================= */
 
 .section {
-    padding: 70px 10%;
+    padding: 30px 10%;
 }
+
 
 .section h2 {
     font-size: 28px;
