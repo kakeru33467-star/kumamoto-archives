@@ -108,7 +108,7 @@
 
 <h1>Rituel de Synchronisation</h1>
 <p id="instruction">Stabilisez les flux altériques instables.</p>
-<p id="scoreDisplay">Stabilité : 0 / 10</p>
+<p id="scoreDisplay">Stabilité : 0 / 20</p>
 
 <div id="memoryTest">
     <h2>Lecture de votre empreinte énergétique</h2>
@@ -120,7 +120,7 @@
 
 <script>
 
-/* ================= PHASE SPHERES ================= */
+/* ================= PHASE SPHERES STABLE ================= */
 
 let score = 0;
 let requiredScore = 20;
@@ -128,39 +128,102 @@ let requiredScore = 20;
 let missed = 0;
 let maxMissed = 3;
 
-let gameActive = false;
+let gameRunning = false;
 
 let spawnDelay = 400;
-let lifetime = 950;
+let lifetime = 900;
 
 let nextRedIn = getRandomRedInterval();
 
+let currentOrb = null;
+let currentTimer = null;
+
 function getRandomRedInterval() {
-    return 3 + Math.floor(Math.random() * 3); // rouge toutes les 3-5 vertes
+    return 3 + Math.floor(Math.random() * 3); // 3-5 vertes avant rouge
 }
 
-function createOrb(isRed = false) {
+/* ===== CREATION ORB ===== */
 
-    let orb = document.createElement("div");
-    orb.classList.add("orb");
-    orb.classList.add(isRed ? "red" : "green");
+function createOrb(isRed) {
 
-    orb.style.top = Math.random() * (window.innerHeight - 120) + "px";
-    orb.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    currentOrb = document.createElement("div");
+    currentOrb.classList.add("orb");
+    currentOrb.classList.add(isRed ? "red" : "green");
 
-    document.body.appendChild(orb);
+    currentOrb.style.top =
+        Math.random() * (window.innerHeight - 120) + "px";
 
-    return orb;
+    currentOrb.style.left =
+        Math.random() * (window.innerWidth - 120) + "px";
+
+    document.body.appendChild(currentOrb);
+
+    let duration = isRed ? 800 : lifetime;
+
+    currentTimer = setTimeout(() => {
+        handleMiss(isRed);
+    }, duration);
+
+    currentOrb.onclick = function () {
+        handleClick(isRed);
+    };
 }
 
-function startGameLoop() {
-    gameActive = true;
-    spawnNextOrb();
+/* ===== GESTION CLIC ===== */
+
+function handleClick(isRed) {
+
+    if (!gameRunning) return;
+
+    clearTimeout(currentTimer);
+
+    if (isRed) {
+        endGame("Interférence détectée. Synchronisation rompue.");
+        return;
+    }
+
+    score++;
+
+    updateDisplay();
+
+    cleanupOrb();
+
+    if (score >= requiredScore) {
+        gameRunning = false;
+        startMemoryPhase();
+        return;
+    }
+
+    accelerateGame();
+    setTimeout(spawnNext, spawnDelay);
 }
 
-function spawnNextOrb() {
+/* ===== GESTION MISS ===== */
 
-    if (!gameActive) return;
+function handleMiss(isRed) {
+
+    if (!gameRunning) return;
+
+    cleanupOrb();
+
+    if (!isRed) {
+        missed++;
+
+        if (missed >= maxMissed) {
+            endGame("Flux instable. Synchronisation échouée.");
+            return;
+        }
+    }
+
+    accelerateGame();
+    setTimeout(spawnNext, spawnDelay);
+}
+
+/* ===== SPAWN SUIVANT ===== */
+
+function spawnNext() {
+
+    if (!gameRunning) return;
 
     let isRed = false;
 
@@ -171,88 +234,77 @@ function spawnNextOrb() {
         nextRedIn--;
     }
 
-    let orb = createOrb(isRed);
-
-    let timer = setTimeout(() => {
-
-        if (!gameActive) return;
-
-        if (!isRed) {
-            missed++;
-
-            if (missed >= maxMissed) {
-                gameActive = false;
-                alert("Flux instable. Synchronisation échouée.");
-                window.location.href = "connexion.html";
-                return;
-            }
-        }
-
-        orb.remove();
-        accelerateGame();
-        setTimeout(spawnNextOrb, spawnDelay);
-
-    }, isRed ? 800 : lifetime);
-
-    orb.onclick = function() {
-
-        if (!gameActive) return;
-
-        clearTimeout(timer);
-
-        if (isRed) {
-            gameActive = false;
-            alert("Interférence détectée. Synchronisation rompue.");
-            window.location.href = "connexion.html";
-            return;
-        }
-
-        score++;
-
-        document.getElementById("scoreDisplay").innerText =
-            "Stabilité : " + score + " / " + requiredScore +
-            " | Échecs : " + missed + " / " + maxMissed;
-
-        orb.remove();
-
-        if (score >= requiredScore) {
-            gameActive = false;
-            startMemoryPhase();
-            return;
-        }
-
-        accelerateGame();
-        setTimeout(spawnNextOrb, spawnDelay);
-    };
+    createOrb(isRed);
 }
+
+/* ===== NETTOYAGE ===== */
+
+function cleanupOrb() {
+
+    if (currentOrb && currentOrb.parentNode) {
+        currentOrb.remove();
+    }
+
+    currentOrb = null;
+    currentTimer = null;
+}
+
+/* ===== ACCELERATION ===== */
 
 function accelerateGame() {
 
-    spawnDelay -= 12;
-    lifetime -= 18;
+    spawnDelay -= 10;
+    lifetime -= 15;
 
     if (spawnDelay < 200) spawnDelay = 200;
     if (lifetime < 350) lifetime = 350;
+}
+
+/* ===== AFFICHAGE ===== */
+
+function updateDisplay() {
+    document.getElementById("scoreDisplay").innerText =
+        "Stabilité : " + score + " / " + requiredScore +
+        " | Échecs : " + missed + " / " + maxMissed;
+}
+
+/* ===== FIN ===== */
+
+function endGame(message) {
+    gameRunning = false;
+    alert(message);
+    window.location.href = "connexion.html";
 }
 
 /* ===== BOULE DE DEMARRAGE ===== */
 
 function createStartOrb() {
 
-    let startOrb = createOrb(false);
+    let startOrb = document.createElement("div");
+    startOrb.classList.add("orb", "green");
 
-    startOrb.onclick = function() {
+    startOrb.style.top =
+        Math.random() * (window.innerHeight - 120) + "px";
+
+    startOrb.style.left =
+        Math.random() * (window.innerWidth - 120) + "px";
+
+    document.body.appendChild(startOrb);
+
+    startOrb.onclick = function () {
 
         startOrb.remove();
+        gameRunning = true;
+
         document.getElementById("instruction").innerText =
             "Synchronisation en cours...";
 
-        startGameLoop();
+        updateDisplay();
+        spawnNext();
     };
 }
 
 createStartOrb();
-
 
 
 /* ================= PHASE MEMOIRE ================= */
