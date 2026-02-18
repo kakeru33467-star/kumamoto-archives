@@ -130,41 +130,39 @@ let maxMissed = 3;
 
 let gameActive = true;
 
-let spawnDelay = 450;
-let lifetime = 1000;
+let spawnDelay = 400;
+let lifetime = 950;
 
-let spawnCount = 0;
+let nextRedIn = getRandomRedInterval();
+
+function getRandomRedInterval() {
+    return 3 + Math.floor(Math.random() * 3); // 3 à 5 vertes avant rouge
+}
 
 function spawnOrb() {
 
     if (!gameActive) return;
-
-    spawnCount++;
 
     let orb = document.createElement("div");
     orb.classList.add("orb");
 
     let isRed = false;
 
-    if (spawnCount > 3 && spawnCount % (4 + Math.floor(Math.random() * 3)) === 0) {
+    if (nextRedIn === 0) {
         isRed = true;
+        nextRedIn = getRandomRedInterval();
+    } else {
+        nextRedIn--;
     }
 
-    if (isRed) {
-        orb.classList.add("red");
-    } else {
-        orb.classList.add("green");
-    }
+    orb.classList.add(isRed ? "red" : "green");
 
     orb.style.top = Math.random() * (window.innerHeight - 120) + "px";
     orb.style.left = Math.random() * (window.innerWidth - 120) + "px";
 
     document.body.appendChild(orb);
 
-    let currentLifetime = isRed ? 800 : lifetime;
-
-    // On stocke le timeout pour pouvoir l'annuler
-    let removeTimeout = setTimeout(() => {
+    let timeout = setTimeout(() => {
 
         if (!gameActive) return;
 
@@ -172,30 +170,29 @@ function spawnOrb() {
             missed++;
 
             if (missed >= maxMissed) {
+                gameActive = false;
                 alert("Flux instable. Synchronisation échouée.");
                 window.location.href = "connexion.html";
                 return;
             }
         }
 
-        if (document.body.contains(orb)) {
-            orb.remove();
-        }
+        if (orb.parentNode) orb.remove();
 
         accelerateGame();
         setTimeout(spawnOrb, spawnDelay);
 
-    }, currentLifetime);
+    }, isRed ? 800 : lifetime);
 
 
     orb.onclick = function() {
 
         if (!gameActive) return;
 
-        // On annule le timeout pour éviter le bug
-        clearTimeout(removeTimeout);
+        clearTimeout(timeout);
 
         if (isRed) {
+            gameActive = false;
             alert("Interférence détectée. Synchronisation rompue.");
             window.location.href = "connexion.html";
             return;
@@ -207,7 +204,7 @@ function spawnOrb() {
             "Stabilité : " + score + " / " + requiredScore +
             " | Échecs : " + missed + " / " + maxMissed;
 
-        orb.remove();
+        if (orb.parentNode) orb.remove();
 
         if (score >= requiredScore) {
             gameActive = false;
@@ -222,16 +219,14 @@ function spawnOrb() {
 
 function accelerateGame() {
 
-    spawnDelay -= 15;
-    lifetime -= 20;
+    spawnDelay -= 12;
+    lifetime -= 18;
 
-    if (spawnDelay < 220) spawnDelay = 220;
+    if (spawnDelay < 200) spawnDelay = 200;
     if (lifetime < 350) lifetime = 350;
 }
 
 spawnOrb();
-
-
 
 
 /* ================= PHASE MEMOIRE ================= */
