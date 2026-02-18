@@ -763,3 +763,32 @@ footer {
     margin-bottom: 30px;
     font-style: italic;
 }
+/* ============================= */
+/* FIL D'ARIANE */
+/* ============================= */
+
+.breadcrumb {
+    font-size: 14px;
+    padding: 15px 10%;
+    background: #f4f6f9;
+    color: #666;
+}
+
+.breadcrumb a {
+    color: #1d3557;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb span {
+    margin: 0 8px;
+}
+
+.breadcrumb .current {
+    color: #333;
+    font-weight: 600;
+}
