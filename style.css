@@ -640,3 +640,75 @@ footer {
     background: #274c77;
 }
 
+/* ============================= */
+/* Jeu Synchronisation Altérique */
+/* ============================= */
+
+.verification-body {
+    margin: 0;
+    background: radial-gradient(circle at center, #1e1b4b, #0f0c29);
+    color: #e0e7ff;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+.verification-title {
+    margin-top: 40px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(139,92,246,0.8);
+}
+
+#scoreDisplay {
+    font-size: 18px;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+/* Sphères */
+
+.orb {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    animation: pulse 1.2s infinite alternate;
+}
+
+.green {
+    background: radial-gradient(circle, #22c55e, #15803d);
+    box-shadow: 0 0 25px #22c55e, 0 0 60px #16a34a;
+}
+
+.red {
+    background: radial-gradient(circle, #ef4444, #991b1b);
+    box-shadow: 0 0 25px #ef4444, 0 0 60px #dc2626;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+/* Phase mémoire */
+
+#memoryTest {
+    margin-top: 50px;
+}
+
+#codeDisplay {
+    font-size: 40px;
+    letter-spacing: 10px;
+    margin: 20px;
+    text-shadow: 0 0 20px #a855f7;
+}
+
+.fade {
+    animation: fadeout 1s forwards;
+}
+
+@keyframes fadeout {
+    to { opacity: 0; }
+}
