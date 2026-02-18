@@ -120,7 +120,7 @@
 
 <script>
 
-/* ================= PHASE SPHERES STABLE ================= */
+/* ================= PHASE SPHERES VERSION CORRIGEE ================= */
 
 let score = 0;
 let requiredScore = 20;
@@ -130,21 +130,25 @@ let maxMissed = 3;
 
 let gameRunning = false;
 
-let spawnDelay = 400;
-let lifetime = 900;
+let spawnDelay = 350;
+let lifetime = 800;
 
 let nextRedIn = getRandomRedInterval();
 
 let currentOrb = null;
 let currentTimer = null;
+let orbId = 0; // ← ID unique pour éviter conflits
 
 function getRandomRedInterval() {
-    return 3 + Math.floor(Math.random() * 3); // 3-5 vertes avant rouge
+    return 3 + Math.floor(Math.random() * 3);
 }
 
 /* ===== CREATION ORB ===== */
 
 function createOrb(isRed) {
+
+    orbId++; // nouvelle orb
+    const thisOrbId = orbId;
 
     currentOrb = document.createElement("div");
     currentOrb.classList.add("orb");
@@ -158,13 +162,20 @@ function createOrb(isRed) {
 
     document.body.appendChild(currentOrb);
 
-    let duration = isRed ? 800 : lifetime;
-
     currentTimer = setTimeout(() => {
+
+        // 🔒 Sécurité : si ce n’est plus l’orb active → on ignore
+        if (thisOrbId !== orbId) return;
+
         handleMiss(isRed);
-    }, duration);
+
+    }, isRed ? 750 : lifetime);
 
     currentOrb.onclick = function () {
+
+        // 🔒 Sécurité : si ce n’est plus l’orb active → ignore
+        if (thisOrbId !== orbId) return;
+
         handleClick(isRed);
     };
 }
@@ -178,12 +189,11 @@ function handleClick(isRed) {
     clearTimeout(currentTimer);
 
     if (isRed) {
-        endGame("Interférence détectée. Synchronisation rompue.");
+        endGame("Interférence détectée.");
         return;
     }
 
     score++;
-
     updateDisplay();
 
     cleanupOrb();
@@ -209,6 +219,8 @@ function handleMiss(isRed) {
     if (!isRed) {
         missed++;
 
+        updateDisplay();
+
         if (missed >= maxMissed) {
             endGame("Flux instable. Synchronisation échouée.");
             return;
@@ -219,7 +231,7 @@ function handleMiss(isRed) {
     setTimeout(spawnNext, spawnDelay);
 }
 
-/* ===== SPAWN SUIVANT ===== */
+/* ===== SPAWN ===== */
 
 function spawnNext() {
 
@@ -253,11 +265,11 @@ function cleanupOrb() {
 
 function accelerateGame() {
 
-    spawnDelay -= 10;
-    lifetime -= 15;
+    spawnDelay -= 12;
+    lifetime -= 18;
 
-    if (spawnDelay < 200) spawnDelay = 200;
-    if (lifetime < 350) lifetime = 350;
+    if (spawnDelay < 180) spawnDelay = 180;
+    if (lifetime < 300) lifetime = 300;
 }
 
 /* ===== AFFICHAGE ===== */
@@ -276,7 +288,7 @@ function endGame(message) {
     window.location.href = "connexion.html";
 }
 
-/* ===== BOULE DE DEMARRAGE ===== */
+/* ===== START ORB ===== */
 
 function createStartOrb() {
 
@@ -294,6 +306,7 @@ function createStartOrb() {
     startOrb.onclick = function () {
 
         startOrb.remove();
+
         gameRunning = true;
 
         document.getElementById("instruction").innerText =
@@ -305,6 +318,7 @@ function createStartOrb() {
 }
 
 createStartOrb();
+
 
 
 /* ================= PHASE MEMOIRE ================= */
