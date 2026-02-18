@@ -490,29 +490,18 @@ footer {
 }
 
 /* ============================= */
-/* SECTION DIRECTION ORPHELINAT */
+/* DIRECTION ORPHELINAT */
 /* ============================= */
 
 .orphan-direction {
-    margin-top: 40px;
+    margin-top: 60px;
 }
 
-.orphan-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-}
-
-.orphan-card h3 {
+.orphan-paragraph {
     margin-bottom: 20px;
-    color: #1d3557;
-}
-
-.orphan-card p {
-    margin-bottom: 12px;
-    line-height: 1.6;
+    line-height: 1.7;
     color: #333;
+    max-width: 900px;
 }
 
 .orphan-meta {
