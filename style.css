@@ -921,3 +921,14 @@ footer {
 .ruin-toggle a:hover {
     background: #444;
 }
+
+.ruin-orb {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #555, #222);
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    box-shadow: 0 0 10px #000;
+    opacity: 0.8;
+}
