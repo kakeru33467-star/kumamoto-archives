@@ -82,23 +82,22 @@ h1 {
 <script>
 
 /* ========================= */
-/* BALLONS PHYSIQUES */
+/* BALLONS SIMPLIFIÉS STABLES */
 /* ========================= */
 
 const balloons = [];
-const gravity = 0.4;
-const friction = 0.995;
+const gravity = 0.25;
+const friction = 0.98;
 const totalBalloons = 18;
 
 let destroyed = 0;
 
 class Balloon {
     constructor() {
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * window.innerHeight * 0.5;
-        this.vx = (Math.random() - 0.5) * 6;
+        this.x = Math.random() * (window.innerWidth - 100);
+        this.y = Math.random() * 200;
+        this.vx = (Math.random() - 0.5) * 2;
         this.vy = Math.random() * 2;
-        this.radius = 45;
 
         this.element = document.createElement("div");
         this.element.className = "balloon";
@@ -108,28 +107,31 @@ class Balloon {
     }
 
     update() {
+
         this.vy += gravity;
         this.x += this.vx;
         this.y += this.vy;
 
-        if (this.x < 0 || this.x + 90 > window.innerWidth) {
-            this.vx *= -1;
-        }
-
+        // sol
         if (this.y + 90 > window.innerHeight) {
             this.y = window.innerHeight - 90;
-            this.vy *= -0.7;
+            this.vy = 0;
+            this.vx *= 0.7; // ralentit horizontal
         }
 
         this.vx *= friction;
-        this.vy *= friction;
 
         this.element.style.left = this.x + "px";
         this.element.style.top = this.y + "px";
     }
 
     pop() {
+
         this.element.remove();
+
+        const index = balloons.indexOf(this);
+        if (index > -1) balloons.splice(index, 1);
+
         destroyed++;
 
         if (destroyed >= totalBalloons) {
@@ -138,33 +140,8 @@ class Balloon {
     }
 }
 
-function handleCollisions() {
-    for (let i = 0; i < balloons.length; i++) {
-        for (let j = i + 1; j < balloons.length; j++) {
-
-            const b1 = balloons[i];
-            const b2 = balloons[j];
-
-            const dx = b1.x - b2.x;
-            const dy = b1.y - b2.y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-
-            if (dist < 90) {
-                const angle = Math.atan2(dy, dx);
-                const force = 3;
-
-                b1.vx += Math.cos(angle) * force;
-                b1.vy += Math.sin(angle) * force;
-                b2.vx -= Math.cos(angle) * force;
-                b2.vy -= Math.sin(angle) * force;
-            }
-        }
-    }
-}
-
 function animate() {
     balloons.forEach(b => b.update());
-    handleCollisions();
     requestAnimationFrame(animate);
 }
 
@@ -174,13 +151,13 @@ for (let i = 0; i < totalBalloons; i++) {
 
 animate();
 
+
 /* ========================= */
-/* PHASE CODE QUI TOMBE */
+/* PHASE CODE SIMPLE */
 /* ========================= */
 
 function startCodePhase() {
 
-    document.querySelectorAll(".balloon").forEach(b => b.remove());
     document.getElementById("instruction").innerText =
         "Fragments récupérés.";
 
@@ -195,10 +172,12 @@ function startCodePhase() {
     blockContainer.innerHTML = "";
 
     codes.forEach(() => {
+
         const zone = document.createElement("div");
         zone.className = "code-drop-zone";
 
         zone.ondragover = e => e.preventDefault();
+
         zone.ondrop = function(e) {
             const data = e.dataTransfer.getData("text");
             this.innerText = data;
@@ -211,6 +190,7 @@ function startCodePhase() {
     codes.sort(() => 0.5 - Math.random());
 
     codes.forEach(code => {
+
         const block = document.createElement("div");
         block.className = "code-block";
         block.innerText = code;
@@ -235,7 +215,7 @@ function checkCompletion() {
     if (filled === 3) {
         setTimeout(() => {
             window.location.href = "archives.html";
-        }, 500);
+        }, 600);
     }
 }
 
