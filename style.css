@@ -865,3 +865,59 @@ footer {
 .shinrin-hero {
     background-image: url("images/centre.jpg");
 }
+
+/* ============================= */
+/* MODE RUINE ORPHELINAT */
+/* ============================= */
+
+.ruin-mode {
+    background: #1a1a1a;
+    color: #bbb;
+}
+
+.ruin-mode .band-light {
+    background: #222;
+}
+
+.ruin-mode .band-dark {
+    background: #111;
+}
+
+.ruin-mode h1,
+.ruin-mode h2,
+.ruin-mode h3 {
+    color: #888;
+}
+
+.ruin-mode p {
+    color: #999;
+}
+
+/* Effet fissures */
+.ruin-mode::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url("images/cracks.png");
+    opacity: 0.08;
+    pointer-events: none;
+}
+
+/* Bouton retour */
+.ruin-toggle {
+    text-align: center;
+    margin: 20px;
+}
+
+.ruin-toggle a {
+    background: #333;
+    color: #aaa;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.ruin-toggle a:hover {
+    background: #444;
+}
