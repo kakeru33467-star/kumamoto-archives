@@ -82,25 +82,35 @@ h1 {
 <script>
 
 /* ========================= */
-/* BALLONS SIMPLIFIÉS STABLES */
+/* BALLONS STABLES VERSION FIX */
 /* ========================= */
 
 const balloons = [];
-const gravity = 0.25;
-const friction = 0.98;
 const totalBalloons = 18;
+
+const gravity = 0.3;
+const floorBounce = 0.4;
+const friction = 0.96;
 
 let destroyed = 0;
 
 class Balloon {
     constructor() {
-        this.x = Math.random() * (window.innerWidth - 100);
+
+        this.size = 90;
+        this.radius = this.size / 2;
+
+        this.x = Math.random() * (window.innerWidth - this.size);
         this.y = Math.random() * 200;
-        this.vx = (Math.random() - 0.5) * 2;
+
+        this.vx = (Math.random() - 0.5) * 3;
         this.vy = Math.random() * 2;
 
         this.element = document.createElement("div");
         this.element.className = "balloon";
+        this.element.style.width = this.size + "px";
+        this.element.style.height = this.size + "px";
+
         document.body.appendChild(this.element);
 
         this.element.onclick = () => this.pop();
@@ -109,17 +119,37 @@ class Balloon {
     update() {
 
         this.vy += gravity;
+
         this.x += this.vx;
         this.y += this.vy;
 
-        // sol
-        if (this.y + 90 > window.innerHeight) {
-            this.y = window.innerHeight - 90;
-            this.vy = 0;
-            this.vx *= 0.7; // ralentit horizontal
+        /* ==== COLLISION GAUCHE ==== */
+        if (this.x <= 0) {
+            this.x = 0;
+            this.vx *= -0.5;
+        }
+
+        /* ==== COLLISION DROITE ==== */
+        if (this.x + this.size >= window.innerWidth) {
+            this.x = window.innerWidth - this.size;
+            this.vx *= -0.5;
+        }
+
+        /* ==== COLLISION SOL ==== */
+        if (this.y + this.size >= window.innerHeight) {
+            this.y = window.innerHeight - this.size;
+            this.vy *= -floorBounce;
+
+            if (Math.abs(this.vy) < 0.8) {
+                this.vy = 0;
+            }
         }
 
         this.vx *= friction;
+
+        if (Math.abs(this.vx) < 0.05) {
+            this.vx = 0;
+        }
 
         this.element.style.left = this.x + "px";
         this.element.style.top = this.y + "px";
