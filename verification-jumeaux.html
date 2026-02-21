@@ -165,22 +165,28 @@ function victory() {
 
 document.addEventListener("keydown", e => {
 
-    if (e.key === "ArrowUp" && direction.y !== 1) {
+    const key = e.key.toLowerCase();
+
+    // HAUT (ArrowUp ou Z)
+    if ((key === "arrowup" || key === "z") && direction.y !== 1) {
         direction = {x: 0, y: -1};
         startGame();
     }
 
-    if (e.key === "ArrowDown" && direction.y !== -1) {
+    // BAS (ArrowDown ou S)
+    if ((key === "arrowdown" || key === "s") && direction.y !== -1) {
         direction = {x: 0, y: 1};
         startGame();
     }
 
-    if (e.key === "ArrowLeft" && direction.x !== 1) {
+    // GAUCHE (ArrowLeft ou Q)
+    if ((key === "arrowleft" || key === "q") && direction.x !== 1) {
         direction = {x: -1, y: 0};
         startGame();
     }
 
-    if (e.key === "ArrowRight" && direction.x !== -1) {
+    // DROITE (ArrowRight ou D)
+    if ((key === "arrowright" || key === "d") && direction.x !== -1) {
         direction = {x: 1, y: 0};
         startGame();
     }
