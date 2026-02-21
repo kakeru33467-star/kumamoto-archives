@@ -1,197 +1,212 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Système altérique corrompu</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            margin: 0;
-            background: #111;
-            color: #aaa;
-            font-family: 'Segoe UI', sans-serif;
-            text-align: center;
-            overflow: hidden;
-        }
+<title>Système altérique instable</title>
+<link rel="stylesheet" href="style.css">
 
-        h1 {
-            margin-top: 40px;
-            letter-spacing: 2px;
-            color: #777;
-        }
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #111;
+    font-family: 'Segoe UI', sans-serif;
+    color: #aaa;
+    text-align: center;
+}
 
-        #instruction {
-            opacity: 0.7;
-            margin-bottom: 20px;
-        }
+h1 {
+    margin-top: 30px;
+    color: #777;
+}
 
-        /* ===== ORBES RUINÉES ===== */
+/* ===================== */
+/* BALLONS PHYSIQUES */
+/* ===================== */
 
-        .ruin-orb {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #444, #1a1a1a);
-            position: absolute;
-            cursor: pointer;
-            box-shadow: 0 0 10px #000;
-            opacity: 0.8;
-            transition: transform 0.2s ease;
-        }
+.balloon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #666, #222);
+    cursor: pointer;
+    user-select: none;
+}
 
-        .ruin-orb:hover {
-            transform: scale(1.1);
-        }
+/* ===================== */
+/* PHASE CODE */
+/* ===================== */
 
-        #hiddenAccess {
-            display: none;
-            margin-top: 30px;
-            padding: 10px 20px;
-            background: #333;
-            color: #aaa;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+#codePhase {
+    display: none;
+    margin-top: 80px;
+}
 
-        /* ===== PHASE CODE RUINE ===== */
+.code-drop-zone {
+    width: 140px;
+    height: 60px;
+    border: 2px dashed #555;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    font-size: 22px;
+}
 
-        #ruinCodePhase {
-            display: none;
-            margin-top: 50px;
-        }
+.code-block {
+    width: 120px;
+    height: 50px;
+    background: #333;
+    margin: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    border-radius: 6px;
+}
 
-        .code-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px;
-        }
+.fade {
+    animation: fadeout 1s forwards;
+}
 
-        .drop-zone {
-            width: 60px;
-            height: 60px;
-            border: 2px dashed #555;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .draggable {
-            width: 60px;
-            height: 60px;
-            background: #333;
-            color: #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: grab;
-            font-size: 24px;
-            border-radius: 6px;
-        }
-
-        .fade {
-            animation: fadeout 1s forwards;
-        }
-
-        @keyframes fadeout {
-            to { opacity: 0; }
-        }
-    </style>
+@keyframes fadeout {
+    to { opacity: 0; }
+}
+</style>
 </head>
 
-<body class="ruin-mode">
+<body>
 
 <h1>Système instable</h1>
-<p id="instruction">Connexion altérique partiellement détruite…</p>
+<p id="instruction">Fragments physiques détectés…</p>
 
-<!-- ===== PHASE ORBES ===== -->
-
-<button id="hiddenAccess" onclick="startRuinCodePhase()">
-    Accès résiduel détecté
-</button>
-
-<!-- ===== PHASE CODE RUINE ===== -->
-
-<div id="ruinCodePhase">
-    <h2>Séquence fragmentée</h2>
-
-    <div class="code-container" id="dropZones"></div>
-    <div class="code-container" id="draggables"></div>
-
-    <button onclick="validateRuinCode()">Valider</button>
+<div id="codePhase">
+    <h2>Reconstitution des séquences</h2>
+    <div id="dropContainer"></div>
+    <div id="blockContainer"></div>
 </div>
 
 <script>
 
 /* ========================= */
-/* PHASE ORBES RUINÉES */
+/* PHYSIQUE BALLONS */
 /* ========================= */
 
-let ruinClicks = 0;
-let requiredClicks = 6;
+const balloons = [];
+const gravity = 0.3;
+const friction = 0.99;
+const totalBalloons = 12;
 
-function spawnRuinOrb() {
-    const orb = document.createElement("div");
-    orb.className = "ruin-orb";
+let destroyed = 0;
 
-    orb.style.top = Math.random() * (window.innerHeight - 100) + "px";
-    orb.style.left = Math.random() * (window.innerWidth - 100) + "px";
+class Balloon {
+    constructor() {
+        this.x = Math.random() * window.innerWidth;
+        this.y = Math.random() * window.innerHeight;
+        this.vx = (Math.random() - 0.5) * 4;
+        this.vy = Math.random() * 2;
+        this.radius = 30;
 
-    orb.onclick = function() {
-        orb.remove();
-        ruinClicks++;
+        this.element = document.createElement("div");
+        this.element.className = "balloon";
+        document.body.appendChild(this.element);
 
-        if (ruinClicks >= requiredClicks) {
-            document.getElementById("hiddenAccess").style.display = "inline-block";
-        }
-    };
-
-    document.body.appendChild(orb);
-}
-
-for (let i = 0; i < requiredClicks; i++) {
-    spawnRuinOrb();
-}
-
-
-/* ========================= */
-/* PHASE CODE RUINE DRAG */
-/* ========================= */
-
-let ruinCode = "";
-
-function startRuinCodePhase() {
-
-    document.querySelectorAll(".ruin-orb").forEach(o => o.remove());
-    document.getElementById("hiddenAccess").style.display = "none";
-
-    document.getElementById("instruction").innerText =
-        "Fragments détectés. Reconstitution requise.";
-
-    document.getElementById("ruinCodePhase").style.display = "block";
-
-    generateRuinCode();
-}
-
-function generateRuinCode() {
-
-    ruinCode = "";
-    for (let i = 0; i < 4; i++) {
-        ruinCode += Math.floor(Math.random() * 10);
+        this.element.onclick = () => this.pop();
     }
 
-    const dropContainer = document.getElementById("dropZones");
-    const dragContainer = document.getElementById("draggables");
+    update() {
+        this.vy += gravity;
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // collisions mur
+        if (this.x < 0 || this.x + 60 > window.innerWidth) {
+            this.vx *= -1;
+        }
+
+        if (this.y + 60 > window.innerHeight) {
+            this.y = window.innerHeight - 60;
+            this.vy *= -0.8;
+        }
+
+        this.vx *= friction;
+        this.vy *= friction;
+
+        this.element.style.left = this.x + "px";
+        this.element.style.top = this.y + "px";
+    }
+
+    pop() {
+        this.element.remove();
+        destroyed++;
+        if (destroyed >= totalBalloons) {
+            startCodePhase();
+        }
+    }
+}
+
+// collision entre ballons
+function handleCollisions() {
+    for (let i = 0; i < balloons.length; i++) {
+        for (let j = i + 1; j < balloons.length; j++) {
+            const b1 = balloons[i];
+            const b2 = balloons[j];
+
+            const dx = b1.x - b2.x;
+            const dy = b1.y - b2.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+
+            if (dist < 60) {
+                const angle = Math.atan2(dy, dx);
+                const force = 2;
+
+                b1.vx += Math.cos(angle) * force;
+                b1.vy += Math.sin(angle) * force;
+                b2.vx -= Math.cos(angle) * force;
+                b2.vy -= Math.sin(angle) * force;
+            }
+        }
+    }
+}
+
+function animate() {
+    balloons.forEach(b => b.update());
+    handleCollisions();
+    requestAnimationFrame(animate);
+}
+
+for (let i = 0; i < totalBalloons; i++) {
+    balloons.push(new Balloon());
+}
+
+animate();
+
+/* ========================= */
+/* PHASE CODE QUI TOMBE */
+/* ========================= */
+
+function startCodePhase() {
+
+    document.querySelectorAll(".balloon").forEach(b => b.remove());
+
+    document.getElementById("instruction").innerText =
+        "Séquences retrouvées.";
+
+    document.getElementById("codePhase").style.display = "block";
+
+    const codes = ["340", "660", "5700"];
+
+    const dropContainer = document.getElementById("dropContainer");
+    const blockContainer = document.getElementById("blockContainer");
 
     dropContainer.innerHTML = "";
-    dragContainer.innerHTML = "";
+    blockContainer.innerHTML = "";
 
-    for (let i = 0; i < ruinCode.length; i++) {
+    codes.forEach(code => {
 
         const zone = document.createElement("div");
-        zone.className = "drop-zone";
-        zone.dataset.index = i;
+        zone.className = "code-drop-zone";
+        zone.dataset.value = code;
 
         zone.ondragover = e => e.preventDefault();
 
@@ -201,47 +216,51 @@ function generateRuinCode() {
         };
 
         dropContainer.appendChild(zone);
-    }
+    });
 
-    const shuffled = ruinCode.split('').sort(() => 0.5 - Math.random());
+    // shuffle
+    codes.sort(() => 0.5 - Math.random());
 
-    shuffled.forEach(num => {
+    codes.forEach(code => {
 
-        const drag = document.createElement("div");
-        drag.className = "draggable";
-        drag.draggable = true;
-        drag.innerText = num;
+        const block = document.createElement("div");
+        block.className = "code-block";
+        block.innerText = code;
+        block.draggable = true;
 
-        drag.ondragstart = function(e) {
-            e.dataTransfer.setData("text", this.innerText);
+        block.ondragstart = e => {
+            e.dataTransfer.setData("text", code);
         };
 
-        dragContainer.appendChild(drag);
+        blockContainer.appendChild(block);
     });
 }
 
-function validateRuinCode() {
+function validate() {
 
-    let result = "";
+    let valid = true;
 
-    document.querySelectorAll(".drop-zone").forEach(zone => {
-        result += zone.innerText || "";
+    document.querySelectorAll(".code-drop-zone").forEach(zone => {
+        if (zone.innerText !== zone.dataset.value) {
+            valid = false;
+        }
     });
 
-    if (result === ruinCode) {
-
+    if (valid) {
         document.body.classList.add("fade");
-
         setTimeout(() => {
             window.location.href = "archives.html";
         }, 1000);
-
     } else {
-        alert("Fragments incorrects.");
+        alert("Fragments mal positionnés.");
     }
 }
 
 </script>
+
+<button onclick="validate()" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:10px 20px;">
+Valider
+</button>
 
 </body>
 </html>
