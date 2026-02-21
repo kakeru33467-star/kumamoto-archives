@@ -8,27 +8,27 @@
 body {
     margin: 0;
     overflow: hidden;
-    background: #111;
+    background: #0f0f0f;
     font-family: 'Segoe UI', sans-serif;
-    color: #aaa;
+    color: #888;
     text-align: center;
 }
 
 h1 {
     margin-top: 30px;
-    color: #777;
+    color: #666;
 }
 
 /* ===================== */
-/* BALLONS PHYSIQUES */
+/* BALLONS */
 /* ===================== */
 
 .balloon {
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #666, #222);
+    background: radial-gradient(circle at 30% 30%, #555, #1a1a1a);
     cursor: pointer;
     user-select: none;
 }
@@ -39,38 +39,31 @@ h1 {
 
 #codePhase {
     display: none;
-    margin-top: 80px;
+    margin-top: 100px;
 }
 
 .code-drop-zone {
-    width: 140px;
-    height: 60px;
-    border: 2px dashed #555;
+    width: 160px;
+    height: 70px;
+    border: 2px dashed #444;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 10px;
+    margin: 15px;
     font-size: 22px;
 }
 
 .code-block {
-    width: 120px;
-    height: 50px;
+    width: 140px;
+    height: 60px;
     background: #333;
-    margin: 10px;
+    margin: 15px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: grab;
-    border-radius: 6px;
-}
-
-.fade {
-    animation: fadeout 1s forwards;
-}
-
-@keyframes fadeout {
-    to { opacity: 0; }
+    border-radius: 8px;
+    font-size: 20px;
 }
 </style>
 </head>
@@ -81,7 +74,7 @@ h1 {
 <p id="instruction">Fragments physiques détectés…</p>
 
 <div id="codePhase">
-    <h2>Reconstitution des séquences</h2>
+    <h2>Fragments récupérés</h2>
     <div id="dropContainer"></div>
     <div id="blockContainer"></div>
 </div>
@@ -89,23 +82,23 @@ h1 {
 <script>
 
 /* ========================= */
-/* PHYSIQUE BALLONS */
+/* BALLONS PHYSIQUES */
 /* ========================= */
 
 const balloons = [];
-const gravity = 0.3;
-const friction = 0.99;
-const totalBalloons = 12;
+const gravity = 0.4;
+const friction = 0.995;
+const totalBalloons = 18;
 
 let destroyed = 0;
 
 class Balloon {
     constructor() {
         this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * window.innerHeight;
-        this.vx = (Math.random() - 0.5) * 4;
+        this.y = Math.random() * window.innerHeight * 0.5;
+        this.vx = (Math.random() - 0.5) * 6;
         this.vy = Math.random() * 2;
-        this.radius = 30;
+        this.radius = 45;
 
         this.element = document.createElement("div");
         this.element.className = "balloon";
@@ -119,14 +112,13 @@ class Balloon {
         this.x += this.vx;
         this.y += this.vy;
 
-        // collisions mur
-        if (this.x < 0 || this.x + 60 > window.innerWidth) {
+        if (this.x < 0 || this.x + 90 > window.innerWidth) {
             this.vx *= -1;
         }
 
-        if (this.y + 60 > window.innerHeight) {
-            this.y = window.innerHeight - 60;
-            this.vy *= -0.8;
+        if (this.y + 90 > window.innerHeight) {
+            this.y = window.innerHeight - 90;
+            this.vy *= -0.7;
         }
 
         this.vx *= friction;
@@ -139,16 +131,17 @@ class Balloon {
     pop() {
         this.element.remove();
         destroyed++;
+
         if (destroyed >= totalBalloons) {
             startCodePhase();
         }
     }
 }
 
-// collision entre ballons
 function handleCollisions() {
     for (let i = 0; i < balloons.length; i++) {
         for (let j = i + 1; j < balloons.length; j++) {
+
             const b1 = balloons[i];
             const b2 = balloons[j];
 
@@ -156,9 +149,9 @@ function handleCollisions() {
             const dy = b1.y - b2.y;
             const dist = Math.sqrt(dx*dx + dy*dy);
 
-            if (dist < 60) {
+            if (dist < 90) {
                 const angle = Math.atan2(dy, dx);
-                const force = 2;
+                const force = 3;
 
                 b1.vx += Math.cos(angle) * force;
                 b1.vy += Math.sin(angle) * force;
@@ -188,9 +181,8 @@ animate();
 function startCodePhase() {
 
     document.querySelectorAll(".balloon").forEach(b => b.remove());
-
     document.getElementById("instruction").innerText =
-        "Séquences retrouvées.";
+        "Fragments récupérés.";
 
     document.getElementById("codePhase").style.display = "block";
 
@@ -202,27 +194,23 @@ function startCodePhase() {
     dropContainer.innerHTML = "";
     blockContainer.innerHTML = "";
 
-    codes.forEach(code => {
-
+    codes.forEach(() => {
         const zone = document.createElement("div");
         zone.className = "code-drop-zone";
-        zone.dataset.value = code;
 
         zone.ondragover = e => e.preventDefault();
-
         zone.ondrop = function(e) {
             const data = e.dataTransfer.getData("text");
             this.innerText = data;
+            checkCompletion();
         };
 
         dropContainer.appendChild(zone);
     });
 
-    // shuffle
     codes.sort(() => 0.5 - Math.random());
 
     codes.forEach(code => {
-
         const block = document.createElement("div");
         block.className = "code-block";
         block.innerText = code;
@@ -236,31 +224,22 @@ function startCodePhase() {
     });
 }
 
-function validate() {
+function checkCompletion() {
 
-    let valid = true;
+    let filled = 0;
 
     document.querySelectorAll(".code-drop-zone").forEach(zone => {
-        if (zone.innerText !== zone.dataset.value) {
-            valid = false;
-        }
+        if (zone.innerText !== "") filled++;
     });
 
-    if (valid) {
-        document.body.classList.add("fade");
+    if (filled === 3) {
         setTimeout(() => {
             window.location.href = "archives.html";
-        }, 1000);
-    } else {
-        alert("Fragments mal positionnés.");
+        }, 500);
     }
 }
 
 </script>
-
-<button onclick="validate()" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:10px 20px;">
-Valider
-</button>
 
 </body>
 </html>
