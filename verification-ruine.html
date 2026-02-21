@@ -1,1 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Système altérique corrompu</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            color: #aaa;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
 
+        h1 {
+            margin-top: 40px;
+            letter-spacing: 2px;
+            color: #777;
+        }
+
+        #instruction {
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        /* ===== ORBES RUINÉES ===== */
+
+        .ruin-orb {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #444, #1a1a1a);
+            position: absolute;
+            cursor: pointer;
+            box-shadow: 0 0 10px #000;
+            opacity: 0.8;
+            transition: transform 0.2s ease;
+        }
+
+        .ruin-orb:hover {
+            transform: scale(1.1);
+        }
+
+        #hiddenAccess {
+            display: none;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #333;
+            color: #aaa;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* ===== PHASE CODE RUINE ===== */
+
+        #ruinCodePhase {
+            display: none;
+            margin-top: 50px;
+        }
+
+        .code-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px;
+        }
+
+        .drop-zone {
+            width: 60px;
+            height: 60px;
+            border: 2px dashed #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .draggable {
+            width: 60px;
+            height: 60px;
+            background: #333;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            font-size: 24px;
+            border-radius: 6px;
+        }
+
+        .fade {
+            animation: fadeout 1s forwards;
+        }
+
+        @keyframes fadeout {
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+
+<body class="ruin-mode">
+
+<h1>Système instable</h1>
+<p id="instruction">Connexion altérique partiellement détruite…</p>
+
+<!-- ===== PHASE ORBES ===== -->
+
+<button id="hiddenAccess" onclick="startRuinCodePhase()">
+    Accès résiduel détecté
+</button>
+
+<!-- ===== PHASE CODE RUINE ===== -->
+
+<div id="ruinCodePhase">
+    <h2>Séquence fragmentée</h2>
+
+    <div class="code-container" id="dropZones"></div>
+    <div class="code-container" id="draggables"></div>
+
+    <button onclick="validateRuinCode()">Valider</button>
+</div>
+
+<script>
+
+/* ========================= */
+/* PHASE ORBES RUINÉES */
+/* ========================= */
+
+let ruinClicks = 0;
+let requiredClicks = 6;
+
+function spawnRuinOrb() {
+    const orb = document.createElement("div");
+    orb.className = "ruin-orb";
+
+    orb.style.top = Math.random() * (window.innerHeight - 100) + "px";
+    orb.style.left = Math.random() * (window.innerWidth - 100) + "px";
+
+    orb.onclick = function() {
+        orb.remove();
+        ruinClicks++;
+
+        if (ruinClicks >= requiredClicks) {
+            document.getElementById("hiddenAccess").style.display = "inline-block";
+        }
+    };
+
+    document.body.appendChild(orb);
+}
+
+for (let i = 0; i < requiredClicks; i++) {
+    spawnRuinOrb();
+}
+
+
+/* ========================= */
+/* PHASE CODE RUINE DRAG */
+/* ========================= */
+
+let ruinCode = "";
+
+function startRuinCodePhase() {
+
+    document.querySelectorAll(".ruin-orb").forEach(o => o.remove());
+    document.getElementById("hiddenAccess").style.display = "none";
+
+    document.getElementById("instruction").innerText =
+        "Fragments détectés. Reconstitution requise.";
+
+    document.getElementById("ruinCodePhase").style.display = "block";
+
+    generateRuinCode();
+}
+
+function generateRuinCode() {
+
+    ruinCode = "";
+    for (let i = 0; i < 4; i++) {
+        ruinCode += Math.floor(Math.random() * 10);
+    }
+
+    const dropContainer = document.getElementById("dropZones");
+    const dragContainer = document.getElementById("draggables");
+
+    dropContainer.innerHTML = "";
+    dragContainer.innerHTML = "";
+
+    for (let i = 0; i < ruinCode.length; i++) {
+
+        const zone = document.createElement("div");
+        zone.className = "drop-zone";
+        zone.dataset.index = i;
+
+        zone.ondragover = e => e.preventDefault();
+
+        zone.ondrop = function(e) {
+            const data = e.dataTransfer.getData("text");
+            this.innerText = data;
+        };
+
+        dropContainer.appendChild(zone);
+    }
+
+    const shuffled = ruinCode.split('').sort(() => 0.5 - Math.random());
+
+    shuffled.forEach(num => {
+
+        const drag = document.createElement("div");
+        drag.className = "draggable";
+        drag.draggable = true;
+        drag.innerText = num;
+
+        drag.ondragstart = function(e) {
+            e.dataTransfer.setData("text", this.innerText);
+        };
+
+        dragContainer.appendChild(drag);
+    });
+}
+
+function validateRuinCode() {
+
+    let result = "";
+
+    document.querySelectorAll(".drop-zone").forEach(zone => {
+        result += zone.innerText || "";
+    });
+
+    if (result === ruinCode) {
+
+        document.body.classList.add("fade");
+
+        setTimeout(() => {
+            window.location.href = "archives.html";
+        }, 1000);
+
+    } else {
+        alert("Fragments incorrects.");
+    }
+}
+
+</script>
+
+</body>
+</html>
