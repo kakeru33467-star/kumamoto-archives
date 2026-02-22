@@ -948,3 +948,31 @@ footer {
     display: block;
     border-radius: 14px;
 }
+
+.mail-card.urgent {
+    border-left: 4px solid #ff3c3c;
+    background: rgba(255, 60, 60, 0.05);
+}
+
+.mail-subject {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.external-link {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.external-link:hover {
+    text-decoration: underline;
+}
+
+.warning-text {
+    margin-top: 15px;
+    font-size: 13px;
+    opacity: 0.6;
+    font-style: italic;
+}
