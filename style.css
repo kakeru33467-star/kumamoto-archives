@@ -976,3 +976,18 @@ footer {
     opacity: 0.6;
     font-style: italic;
 }
+/* ============================= */
+/* BADGE NOUVEAU MESSAGE */
+/* ============================= */
+
+.notif-badge {
+    background: #ff3c3c;
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    vertical-align: middle;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
